@@ -16,8 +16,6 @@ class DocProcessor:
     def clean_text(self, text):
         """
         Cleans extracted text by removing boilerplate, fixing formatting, and removing hyphenated words.
-        :param text: Raw extracted text.
-        :return: Cleaned text.
         """
         # Remove page numbers and metadata (e.g., "PO 00000 Frm 00567 Fmt 8010 Sfmt 8010")
         text = re.sub(r"PO\s+\d{5}\s+Frm\s+\d+\s+Fmt\s+\d+\s+Sfmt\s+\d+", "", text)

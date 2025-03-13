@@ -3,7 +3,7 @@ python -m pytest regulation_task/tests/pre_processing/test_processor.py::test_so
 python -m pytest regulation_task/tests/pre_processing/test_processor.py::test_doc_to_txt_processor
 
 
-python regulation_task/correct.py
+python regulation_task/test_for_compliance.py
 
 
 ```

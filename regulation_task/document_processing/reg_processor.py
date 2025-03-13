@@ -78,7 +78,7 @@ class Doc_Processor:
         for pdf in pdf_files:
             pdf_path = os.path.join(self.pdf_directory, pdf)
             print(f"Processing {pdf}...")
-            output_files.append(self.parse_pdf(pdf_path, page_batch=page_batch))
+            self.parse_pdf(pdf_path, page_batch=page_batch)
 
         return output_files
 

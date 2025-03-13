@@ -33,11 +33,18 @@ from typing import Optional
 class Regulatory_API_Prompt():
     """
     Defines API call for regulatory clause extraction.  
+
+    Args:
+        (str) model: model to use for API call
+        (str) sys_prompt: system prompt for API call
+        (str) user_prompt: user prompt for API call
+        (int) max_tokens: max tokens for API call
+        (str) assistant_prompt: assistant prompt for API call - what the model begins it's response with
     """
     model: str = "claude-3-5-haiku-20241022"
     sys_prompt: str = "You are a regulatory compliance expert. You are given a document and your job is to extract a numbered list of regulatory clauses from the document."
-    user_prompt: str = "Document: "
-    max_tokens: int = 100
+    content: str = "Document: "
+    max_tokens: Optional[int] = None
     assistant_prompt: Optional[str] = None
 
 
@@ -91,21 +98,29 @@ class SOP_Processor():
         f = open(self.sop_path, "rb")
         doc = docx.Document(f)
         return "\n".join([para.text for para in doc.paragraphs])
-    
-    def extract_prompt(self, api_prompt: Regulatory_API_Prompt, context: Optional[str] = None):
+
+    def post_process_clauses(self, clause_str: str):
+        pass
+
+
+    def extract_clauses(self, api_prompt: Regulatory_API_Prompt, context: Optional[str] = None):
         if context is None: 
             context = self.get_text_from_docx()
-
-        api_prompt.user_prompt += context
+        
+        api_prompt.content += context
 
         api_key = dotenv.get_key(".env", "ANTHROPIC_API_KEY")
 
         messages = [
-            {"role": "user", "content": api_prompt.sys_prompt},
+            {"role": "user", "content": api_prompt.content},
         ]
 
         if api_prompt.assistant_prompt is not None:
             messages.append({"role": "assistant", "content": api_prompt.assistant_prompt})
+
+        if api_prompt.max_tokens is None:
+            api_prompt.max_tokens = (len(api_prompt.content) // 4) * 3
+        
 
         client = anthropic.Anthropic(api_key=api_key)
         response = client.messages.create(
@@ -116,6 +131,9 @@ class SOP_Processor():
         )
 
         return response.content[0].text
+
+
+    
         
     
     

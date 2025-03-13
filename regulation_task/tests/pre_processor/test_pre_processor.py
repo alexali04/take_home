@@ -8,7 +8,7 @@ def test_sop_processor():
         max_tokens=10
     )
 
-    response = sop_processor.extract_prompt(prompt, context="hello!")
+    response = sop_processor.extract_clauses(prompt, context="hello!")
     assert response == "hello"
 
 

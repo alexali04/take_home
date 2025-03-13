@@ -38,6 +38,7 @@ class Regulatory_API_Prompt():
     sys_prompt: str = "You are a regulatory compliance expert. You are given a document and your job is to extract a numbered list of regulatory clauses from the document."
     user_prompt: str = "Document: "
     max_tokens: int = 100
+    assistant_prompt: Optional[str] = None
 
 
 
@@ -91,29 +92,30 @@ class SOP_Processor():
         doc = docx.Document(f)
         return "\n".join([para.text for para in doc.paragraphs])
     
-    def extract_regulatory_clauses(self, api_prompt: Regulatory_API_Prompt, context: Optional[str] = None):
+    def extract_prompt(self, api_prompt: Regulatory_API_Prompt, context: Optional[str] = None):
         if context is None: 
             context = self.get_text_from_docx()
 
         api_prompt.user_prompt += context
 
         api_key = dotenv.get_key(".env", "ANTHROPIC_API_KEY")
-        print(api_key)
 
-        breakpoint()
+        messages = [
+            {"role": "user", "content": api_prompt.sys_prompt},
+        ]
+
+        if api_prompt.assistant_prompt is not None:
+            messages.append({"role": "assistant", "content": api_prompt.assistant_prompt})
 
         client = anthropic.Anthropic(api_key=api_key)
         response = client.messages.create(
             model=api_prompt.model,
             max_tokens=api_prompt.max_tokens,
             system=api_prompt.sys_prompt,
-            messages=[
-                {"role": "user", 
-                 "content": api_prompt.user_prompt},
-                {"role": "assistant", 
-                 "content": response.content[0].text}
-            ]
+            messages=messages
         )
+
+        return response.content[0].text
         
     
     

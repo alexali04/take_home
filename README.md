@@ -30,6 +30,8 @@ Plan (Interview):
 a. Convert SOP into text
 b. Using OCR + other PDF parsers, convert regulatory PDFs into text (in real scenario, would search for multi-model embedding strategy)
 c. LLM-based extraction - use LLM to chunk texts into regulatory clauses. 
+    (i) - interesting questions on how to best prompt LLM for extraction
+
 2. RAG-LLM
 a. embed SOP chunks as query vectors
 b. embed regulatory texts as key vector

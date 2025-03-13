@@ -2,5 +2,5 @@
 .env
 regulation_task/data
 .pytest_cache
-.start.sh.swp
 __pycache__/
+data/

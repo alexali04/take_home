@@ -1,9 +1,15 @@
-from regulation_task.pre_processor.pre_processing import SOP_Processor
+from regulation_task.pre_processor.sop_processor import SOP_Processor, Regulatory_API_Prompt
 
 def test_sop_processor():
-    sop_processor = SOP_Processor("./regulation_task/data/sop/original.docx", cut_off=True, cut_off_length=100)
-    paras = sop_processor.manual_para_chunking()
+    sop_processor = SOP_Processor("./regulation_task/data/sop/original.docx")
+    prompt = Regulatory_API_Prompt(
+        sys_prompt="You must say hello back! Only say 'hello'! No preamble!",
+        user_prompt="", 
+        max_tokens=10
+    )
 
-    for para in paras:
-        assert len(para) <= 100
-    
+    response = sop_processor.extract_prompt(prompt, context="hello!")
+    assert response == "hello"
+
+
+

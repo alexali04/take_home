@@ -1,9 +1,9 @@
 import os
-import fitz # PyMuPDF
-import PyPDF2
+import fitz 
+import re
 
 class DocProcessor:
-    def __init__(self, pdf_directory, output_directory="parsed_regulatory_texts"):
+    def __init__(self, pdf_directory="./regulation_task/data/regulations", output_directory="./regulation_task/data/regulatory_texts"):
         """
         Initialize the PDFParser with a directory of PDFs.
         :param pdf_directory: Path to the directory containing PDFs.
@@ -12,6 +12,34 @@ class DocProcessor:
         self.pdf_directory = pdf_directory
         self.output_directory = output_directory
         os.makedirs(self.output_directory, exist_ok=True)
+    
+    def clean_text(self, text):
+        """
+        Cleans extracted text by removing boilerplate, fixing formatting, and removing hyphenated words.
+        :param text: Raw extracted text.
+        :return: Cleaned text.
+        """
+        # Remove page numbers and metadata (e.g., "PO 00000 Frm 00567 Fmt 8010 Sfmt 8010")
+        text = re.sub(r"PO\s+\d{5}\s+Frm\s+\d+\s+Fmt\s+\d+\s+Sfmt\s+\d+", "", text)
+
+        # Remove Editorial Notes, List of CFR Sections Affected, and Federal Register citations
+        text = re.sub(r"EDITORIAL NOTE:.*?(www\.\S+)?", "", text, flags=re.DOTALL)
+        text = re.sub(r"List of CFR Sections Affected.*?(www\.\S+)?", "", text, flags=re.DOTALL)
+        text = re.sub(r"FEDERAL REGISTER citations.*?(www\.\S+)?", "", text, flags=re.DOTALL)
+
+        # Remove references like "AUTHORITY: 49 U.S.C. 106(g), 40103, ..."
+        text = re.sub(r"AUTHORITY:.*", "", text)
+        text = re.sub(r"SOURCE:.*", "", text)
+        text = re.sub(r"EFFECTIVE DATE NOTE:.*", "", text)
+
+        # Remove "Reserved" sections
+        text = re.sub(r"PART\s+\d+\s+\[RESERVED\]", "", text)
+
+        # Remove hyphenation (split words across lines like "air- space" -> "airspace")
+        text = re.sub(r"(\w+)-\s+(\w+)", r"\1\2", text)
+
+        text = re.sub(r"\n\s*\n", "\n", text).strip()
+        return text
     
 
     def parse_pdf(self, pdf_path, page_batch=10):
@@ -25,7 +53,8 @@ class DocProcessor:
             with open(output_file, "w", encoding="utf-8") as f:
                 for start_page in range(0, total_pages, page_batch):
                     end_page = min(start_page + page_batch, total_pages)
-                    text_batch = [doc[page].get_text("text") for page in range(start_page, end_page)]
+                    text_batch = [self.clean_text(doc[page].get_text("text")) for page in range(start_page, end_page)]
+
                     f.write("\n".join(text_batch) + "\n\n")
 
             print(f"Extracted text saved to: {output_file}")
@@ -49,10 +78,4 @@ class DocProcessor:
             self.parse_pdf(pdf_path, page_batch=page_batch)
             break
 
-            
-pdf_directory = "./regulation_task/data/regulatory_docs"
-output_directory = "./regulation_task/data/parsed_regulatory_texts"
-
-processor = DocProcessor(pdf_directory, output_directory)
-processor.parse_directory(page_batch=5)
 

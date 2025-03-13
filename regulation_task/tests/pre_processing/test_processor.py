@@ -16,8 +16,9 @@ def test_sop_processor():
 
 def test_doc_to_txt_processor():
     doc_processor = DocProcessor()
-    doc_processor.parse_pdf("./regulation_task/data/regulatory_texts/REG-14 CFR Part 77.pdf")
+    doc_processor.parse_pdf("./regulation_task/data/regulations/REG-14 CFR Part 77.pdf")
     assert os.path.exists("./regulation_task/data/regulatory_texts/REG-14 CFR Part 77.txt")
+    
 
 
 

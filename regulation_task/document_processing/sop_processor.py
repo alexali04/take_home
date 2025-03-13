@@ -27,6 +27,7 @@ import anthropic
 from dataclasses import dataclass
 import docx
 import dotenv
+import json
 from typing import Optional
 
 @dataclass
@@ -100,11 +101,20 @@ class SOP_Processor():
         return "\n".join([para.text for para in doc.paragraphs])
 
     def post_process_clauses(self, clause_str: str):
-        pass
+        """Returns json object from string"""
+        clauses = json.loads(clause_str)
+        return clauses
 
-
-    def extract_clauses(self, api_prompt: Regulatory_API_Prompt, context: Optional[str] = None):
-        if context is None: 
+    def extract_clauses(self, api_prompt: Regulatory_API_Prompt, context: str = ""):
+        """
+        Args:
+            (Regulatory_API_Prompt) api_prompt: API prompt to use for clause extraction
+            (str) context: context to use for clause extraction
+        
+        Returns:
+            (dict) clauses: clauses extracted from the context
+        """
+        if context == "": 
             context = self.get_text_from_docx()
         
         api_prompt.content += context
@@ -130,7 +140,10 @@ class SOP_Processor():
             messages=messages
         )
 
-        return response.content[0].text
+        if context == "": 
+            return self.post_process_clauses(response.content[0].text)
+        else: 
+            return response.content[0].text
 
 
     

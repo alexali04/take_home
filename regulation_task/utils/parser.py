@@ -7,6 +7,7 @@ def get_rag_parser():
     parser.add_argument("--cut_off", type=bool, default=False)
     parser.add_argument("--cut_off_length", type=int, default=100)
     parser.add_argument("--max_tokens", type=int, default=100)
-    parser.add_argument("--sys_prompt_path", type=str, default="regulatory_compliance_expert.txt")
+    parser.add_argument("--sys_prompt_text", type=str, default="regulatory_compliance_expert")
+    parser.add_argument("--extraction_prompt_text", type=str, default="extraction_prompt")
     return parser
 

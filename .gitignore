@@ -4,3 +4,4 @@ regulation_task/data
 .pytest_cache
 __pycache__/
 data/
+venv_take_home/

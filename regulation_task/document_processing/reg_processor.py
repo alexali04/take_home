@@ -2,12 +2,13 @@ import os
 import fitz 
 import re
 
-class DocProcessor:
+class Doc_Processor:
     def __init__(self, pdf_directory="./regulation_task/data/regulations", output_directory="./regulation_task/data/regulatory_texts"):
         """
         Initialize the PDFParser with a directory of PDFs.
-        :param pdf_directory: Path to the directory containing PDFs.
-        :param output_directory: Path to store extracted text files.
+        args:
+           (str) pdf_directory: Path to the directory containing PDFs.
+           (str) output_directory: Path to store extracted text files.
         """
         self.pdf_directory = pdf_directory
         self.output_directory = output_directory
@@ -40,9 +41,12 @@ class DocProcessor:
         return text
     
 
-    def parse_pdf(self, pdf_path, page_batch=10):
+    def parse_pdf(self, pdf_path, page_batch=10, remove_existing=True):
         pdf_name = os.path.basename(pdf_path).replace(".pdf", "")
         output_file = os.path.join(self.output_directory, f"{pdf_name}.txt")
+
+        if os.path.exists(output_file) and remove_existing:
+            os.remove(output_file)
 
         try:
             doc = fitz.open(pdf_path)
@@ -56,24 +60,26 @@ class DocProcessor:
                     f.write("\n".join(text_batch) + "\n\n")
 
             print(f"Extracted text saved to: {output_file}")
+            return output_file
         except Exception as e:
             print(f"Error processing {pdf_path}: {e}")
-    
 
-    def parse_directory(self, page_batch=5):
+
+    def parse_directory_of_pdfs(self, page_batch=5):
         """
         Parse all PDFs in the directory.
-        :param page_batch: Number of pages to batch together while extracting text.
         """
         pdf_files = [f for f in os.listdir(self.pdf_directory) if f.endswith(".pdf")]
         if not pdf_files:
             print("No PDF files found in the directory.")
             return
         
+        output_files = []
         for pdf in pdf_files:
             pdf_path = os.path.join(self.pdf_directory, pdf)
             print(f"Processing {pdf}...")
-            self.parse_pdf(pdf_path, page_batch=page_batch)
-            break
+            output_files.append(self.parse_pdf(pdf_path, page_batch=page_batch))
+
+        return output_files
 
 

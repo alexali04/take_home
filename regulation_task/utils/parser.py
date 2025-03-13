@@ -3,11 +3,13 @@ import argparse
 def get_rag_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, default="claude-3-5-haiku-20241022")
-    parser.add_argument("--sop_path", type=str, default="./regulation_task/data/sop/original.docx")
+    parser.add_argument("--sop_name", type=str, default="original.docx")
     parser.add_argument("--cut_off", type=bool, default=False)
     parser.add_argument("--cut_off_length", type=int, default=100)
     parser.add_argument("--max_tokens", type=int, default=100)
     parser.add_argument("--sys_prompt_text", type=str, default="regulatory_compliance_expert")
     parser.add_argument("--extraction_prompt_text", type=str, default="extraction_prompt")
+    parser.add_argument("--data_dir", type=str, default="")
+    parser.add_argument("--page_batch", type=int, default=10)
     return parser
 

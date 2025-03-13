@@ -105,7 +105,7 @@ class SOP_Processor():
         clauses = json.loads(clause_str)
         return clauses
 
-    def extract_clauses(self, api_prompt: Regulatory_API_Prompt, context: str = ""):
+    def extract_clauses_from_docx(self, api_prompt: Regulatory_API_Prompt, context: str = ""):
         """
         Args:
             (Regulatory_API_Prompt) api_prompt: API prompt to use for clause extraction

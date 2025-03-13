@@ -12,7 +12,7 @@ If the clause mandated how to handle molten material, accidents would have high 
 
 Risk level is a measure of how high the risk of non-compliance is. 
 
-Respone in JSON format:
+Respond in JSON format:
 {{
     "clauses": [
         {{

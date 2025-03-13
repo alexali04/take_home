@@ -1,0 +1,6 @@
+*.DS_STORE
+.env
+regulation_task/data
+.pytest_cache
+.start.sh.swp
+__pycache__/

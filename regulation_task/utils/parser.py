@@ -4,7 +4,7 @@ def get_rag_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--sop_model", type=str, default="claude-3-5-haiku-20241022")
     parser.add_argument("--chunking_model", type=str, default="claude-3-5-haiku-20241022")
-    parser.add_argument("--logging_model", type=str, default="claude-3-5-haiku-20241022")
+    parser.add_argument("--logging_model", type=str, default="claude-3-5-sonnet-20241022")
     parser.add_argument("--sop_name", type=str, default="original.docx")
     parser.add_argument("--cut_off", action=argparse.BooleanOptionalAction)
     parser.add_argument("--cut_off_length", type=int, default=100)
@@ -19,8 +19,9 @@ def get_rag_parser():
     # prompts
     parser.add_argument("--sys_prompt", type=str, default="compliance_expert_identity")
     parser.add_argument("--sop_prompt", type=str, default="chunking_sop")
-    parser.add_argument("--reg_prompt", type=str, default="chunking_sop")   # could also specify chunking_reg
-    parser.add_argument("--logging_prompt", type=str, default="logging_prompt") 
+    parser.add_argument("--reg_prompt", type=str, default="chunking_regulations")   # could also specify chunking_reg
+    parser.add_argument("--logging_prompt", type=str, default="log_instructions") 
+    parser.add_argument("--sys_prompt_logging", type=str, default="logging_sys_prompt")
 
     return parser
 

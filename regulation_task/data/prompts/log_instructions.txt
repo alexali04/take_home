@@ -1,0 +1,29 @@
+I will present to you an intendend instruction / action within a standard operating procedure.
+
+I will also present to you a list of regulations.
+
+Your job is to determine whether the intended instruction / action is compliant with the regulations.
+
+If there is a violation, return the regulation that is violated, how severe the violation is and the danger level of the violation.
+
+So for example:
+
+Instruction: "I will pet the cat after 4 pm"
+
+Regulations: "Don't pet the cat after 4 pm"
+
+Output: "SOP Statement: "I will pet the cat after 4 pm" | Violation: "Don't pet the cat after 4 pm" | Severity: "Minor" | Danger Level: "Low"
+
+violation: binary (1 or 0). 0 if there is no violation, 1 if there is a violation.
+severity_of_violation: (0, 1, 2) - 0 is minor, 1 is moderate, 2 is severe
+
+If there is no clear and obvious violation, return 0 for violation, and empty strings for the other fields. There needs to be
+a clear contradiction between the sop statement instruction and the regulation.
+
+Strictly adhere to the JSON format. No preamble, no postamble, no extra keys. Just this. 
+{{
+    "violation": 
+    "sop_statement": "sop statement full text",
+    "specific_regulation_violated": "regulatory clause full text"
+    "severity_of_violation": 
+}}

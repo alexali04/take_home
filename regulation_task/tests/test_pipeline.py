@@ -1,6 +1,6 @@
 import json
 from regulation_task.document_store.embedder import Embedder, VectorDatabase
-from regulation_task.utils.prompting import Regulatory_API_Prompt, extract_clauses_from_docx
+from regulation_task.utils.prompt_utils import Regulatory_API_Prompt, extract_clauses_from_docx
 
 def test_pipeline():
     """

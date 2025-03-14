@@ -85,12 +85,14 @@ class VectorDatabase:
 
         results = []
         clauses = open(clauses_path, "r").read()
-        for clause in clauses:
+        clauses = json.loads(clauses)["clauses"]
+        clause_str = [self.convert_to_str(clause) for clause in clauses]
+        for clause in clause_str:
             relevant_indices = self.search(clause, k)
             relevant_clauses = [self.id_to_clause[i] for i in relevant_indices]
             results.append(relevant_clauses)
 
-        return clauses, results
+        return clause_str, results
         
 
 def construct_vector_database(args, json_dir: str):

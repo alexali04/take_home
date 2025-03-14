@@ -27,7 +27,7 @@ import docx
 import json
 import os
 
-from utils.prompting import Regulatory_API_Prompt, extract_clauses_from_docx
+from regulation_task.utils.prompt_utils import Regulatory_API_Prompt, extract_clauses_from_docx
 
 class SOP_Processor():
     """

@@ -4,7 +4,7 @@ import fitz
 import re
 from typing import Optional
 
-from utils.prompting import Regulatory_API_Prompt, extract_clauses_from_docx
+from regulation_task.utils.prompt_utils import Regulatory_API_Prompt, extract_clauses_from_docx
 
 
 class Doc_Processor:
@@ -88,7 +88,7 @@ class Doc_Processor:
                 text_batches.append("\n".join(text_batch))
                         
             chunked_clauses_str = self.chunk_to_regulatory_clauses(
-                document="\n\n".join(text_batches)[:1000],         # remove
+                document="\n\n".join(text_batches)[:2000],        
                 use_llm=use_llm,
                 api_prompter=api_prompter
             )

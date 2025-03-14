@@ -1,5 +1,7 @@
 import logging
+import json
 from regulation_task.utils.parser import get_rag_parser
+from regulation_task.utils.prompt_utils import generate_log
 from regulation_task.document_processing.sop_processor import process_sop
 from regulation_task.document_processing.reg_processor import extract_regulation_clauses
 from regulation_task.document_store.embedder import construct_vector_database
@@ -24,16 +26,25 @@ def main(args):
     db = construct_vector_database(args, regulatory_json_dir)
 
     logging.info("Getting relevant clauses...")
-    sop_clauses, regulatory_clauses = db.get_relevant_clauses_from_path(clauses_path, k=5)
-    print(sop_clauses[0])
-    print(regulatory_clauses[0])
-    breakpoint()
+    sop_clauses, regulatory_clauses = db.get_relevant_clauses_from_path(clauses_path, k=3)
+
+    logging.info(f"Number of SOP clauses: {len(sop_clauses)}")
+    logging.info(f"Number of regulatory clauses: {len(regulatory_clauses)}")
+    logging.info(f"Number of regulatory clause contextual retrievals per SOP clause: {len(regulatory_clauses[0])}")
+
+
+
+    # sop_clauses: list of strings (key vectors)
+    # regulatory_clauses: list of list of 5 strings (query vectors)
 
     logging.info("Generating log...")
-    log = generate_log(args, clauses_path, relevant_clauses)
-    logging.info(f"Log generated")
+
+    log = generate_log(args, sop_clauses, regulatory_clauses, data_dir)
 
     print(log)
+
+    logging.info(f"Number of violations: {len(log)}")
+
 
 
 

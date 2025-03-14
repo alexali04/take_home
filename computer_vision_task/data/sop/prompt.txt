@@ -1,0 +1,7 @@
+Given a standard operating procedure (SOP), extract the instructions laid out from the SOP in JSON format. 
+
+If the SOP states "feed the cat after 5 pm", then the JSON should be:
+{
+    "title": "Feed cat",
+    "instructions": "feed the cat after 5 pm"
+}

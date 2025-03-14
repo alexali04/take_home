@@ -6,7 +6,7 @@ python -m pytest regulation_task/tests/document_store/test_faiss.py::test_embedd
 python regulation_task/tests/document_store/test_faiss.py
 
 
-python regulation_task/test_for_compliance.py
+python regulation_task/test_for_compliance.py --use_llm_chunking
 
 find regulation_task/data/regulatory_texts -type f -exec wc -c {} + | awk '{ total += $1 } END { print total }'
 ```

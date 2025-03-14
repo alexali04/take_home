@@ -78,16 +78,7 @@ class VectorDatabase:
         assert len(results[0]) == k
         return results
     
-    def chunk_to_regulatory_clauses(document: str, use_llm: bool = False) -> list[str]:
-        """
-        Chunk a regulatory document into clauses.
-
-        WARNING: LLM chunking is EXPENSIVE! Only use if data is highly unstructured. 
-        """
-        if not use_llm:
-            return document.split("\n\n")
     
-        # Use LLM to chunk the document into regulatory clauses
  
 
 def construct_vector_database(args, regulatory_texts_dir: str):

@@ -23,13 +23,11 @@ practically, domain guided summarization
 """
 
 
-import anthropic
 import docx
-import dotenv
 import json
 import os
 
-from utils.prompting import Regulatory_API_Prompt
+from utils.prompting import Regulatory_API_Prompt, extract_clauses_from_docx
 
 class SOP_Processor():
     """
@@ -86,49 +84,7 @@ class SOP_Processor():
         clauses = json.loads(clause_str)
         return clauses
 
-    def extract_clauses_from_docx(self, api_prompt: Regulatory_API_Prompt, context: str = ""):
-        """
-        Args:
-            (Regulatory_API_Prompt) api_prompt: API prompt to use for clause extraction
-            (str) context: context to use for clause extraction
-        
-        Returns:
-            (str) path to the json file containing the clauses
-        """
-        if context == "": 
-            context = self.get_text_from_docx()
-        
-        api_prompt.content += context
-
-        api_key = dotenv.get_key(".env", "ANTHROPIC_API_KEY")
-
-        messages = [
-            {"role": "user", "content": api_prompt.content},
-        ]
-
-        if api_prompt.assistant_prompt is not None:
-            messages.append({"role": "assistant", "content": api_prompt.assistant_prompt})
-
-        if api_prompt.max_tokens is None:
-            api_prompt.max_tokens = (len(api_prompt.content) // 4) * 3
-        
-
-        client = anthropic.Anthropic(api_key=api_key)
-        response = client.messages.create(
-            model=api_prompt.model,
-            max_tokens=api_prompt.max_tokens,
-            system=api_prompt.sys_prompt,
-            messages=messages
-        )
-
-        if context == "": 
-            return self.post_process_clauses(response.content[0].text)
-        else: 
-            return response.content[0].text
-
 def process_sop(args, data_dir: str):
-    data_dir = args.data_dir
-
     sop_path = os.path.join(data_dir, "sop", args.sop_name)
     prompt_dir = os.path.join(data_dir, "prompts")
 
@@ -138,20 +94,24 @@ def process_sop(args, data_dir: str):
         cut_off_length=args.cut_off_length
     )
     
-    sys_prompt = open(f"{prompt_dir}/{args.sys_prompt_text}.txt").read()
-    extraction_prompt = open(f"{prompt_dir}/{args.extraction_prompt_text}.txt").read()
+    sys_prompt = open(f"{prompt_dir}/{args.sys_prompt}.txt").read()
+    sop_prompt = open(f"{prompt_dir}/{args.sop_prompt}.txt").read()
 
     api_prompt = Regulatory_API_Prompt(
-        model=args.model,
+        model=args.sop_model,
         sys_prompt=sys_prompt,
-        assistant_prompt=None,
-        content=extraction_prompt,
-        max_tokens=2000
+        content=sop_prompt,
+        max_tokens=8000
     )
 
-    clause_dict = sop_processor.extract_clauses_from_docx(api_prompt)
-    clauses_path = os.path.join(data_dir, "sop", f"{args.sop_name}_clauses.json")
-    json.dump(clause_dict, open(clauses_path, "w"))
+    context = sop_processor.get_text_from_docx()
+
+    clause_text = extract_clauses_from_docx(api_prompt, context)
+
+    clause_dict = sop_processor.post_process_clauses(clause_text)
+
+    clauses_path = os.path.join(data_dir, "sop", f"sop_clauses.json")
+    json.dump(clause_dict, open(clauses_path, "w"), indent=4)
 
     return clauses_path
 

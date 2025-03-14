@@ -25,3 +25,4 @@ Respond in JSON format:
     ]
 }}
 
+Feel free to ignore any clauses which are administrative / not dangerous in nature. 

@@ -1,6 +1,6 @@
 import os
 from utils.parser import get_sop_parser
-from processor.pid_processor import PIDAnalyzer
+from processor.pid_processor import analyze_pid
 
 def main(args):
     sop_data_dir = args.sop_data_dir
@@ -11,19 +11,8 @@ def main(args):
     pid_path = os.path.join(pid_data_dir, args.pid_path)
     arrowhead_template_path = os.path.join(sop_data_dir, args.arrowhead_template_path)
 
-    # 1. parse pdf
 
-    processor = PIDAnalyzer(
-        arrowhead_template_path=arrowhead_template_path,
-        detection_model=args.detection_model,
-        text_detection_threshold=args.text_detection_threshold,
-        arrow_detection_threshold=args.arrow_detection_threshold
-    )
-
-    components = processor.detect_components(pid_path)
-    text_data = processor.extract_text_data(pid_path)
-    arrow_heads = processor.detect_arrow_heads(pid_path)
-    processor.build_pid_graph(text_data, arrow_heads, components)
+    analyze_pid(pid_path)
 
 
 

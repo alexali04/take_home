@@ -23,11 +23,10 @@ def main(args):
     logging.info("Constructing vector database...")
     db = construct_vector_database(args, regulatory_json_dir)
 
-    breakpoint()
-
     logging.info("Getting relevant clauses...")
-    relevant_clauses = db.get_relevant_clauses(clauses_path, k=5)
-
+    sop_clauses, regulatory_clauses = db.get_relevant_clauses_from_path(clauses_path, k=5)
+    print(sop_clauses[0])
+    print(regulatory_clauses[0])
     breakpoint()
 
     logging.info("Generating log...")

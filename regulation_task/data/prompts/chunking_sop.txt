@@ -1,5 +1,9 @@
-Extract all regulatory clauses from the following SOP. 
-For each clause, identify:
+Extract all instructions / regulatory clauses from the following document. This is either a list of basic instructions
+or a standard operating procedure. The standard operating procedure contains a list of instructions which may or may not be
+regulatorily compliant. You are to encode all instructions / clauses from the document into a list of JSON objects.
+
+
+For each instruction / clause, identify:
 1. Title
 2. Full text of clause
 3. Requirement severity level: (mandatory, recommended, optional)
@@ -7,8 +11,8 @@ For each clause, identify:
 5. Noncompliance chance level: (0, 1, 2)
 
 Severity level is a measure of how high the potential consequences are if errors were made in following said instructions. 
-For example, if the clause mandates a specific type of screw-driver, that probably wouldn't have high consequences if not followed.
-If the clause mandated how to handle molten material, accidents would have high consequences. 
+For example, if the instruction mandates a specific type of screw-driver, that probably wouldn't have high consequences if not followed.
+If the instruction mandated how to handle molten material, accidents would have high consequences. 
 
 Risk level is a measure of how high the risk of non-compliance is. 
 
@@ -25,4 +29,5 @@ Respond in JSON format:
     ]
 }}
 
-Feel free to ignore any clauses which are administrative / not dangerous in nature. 
+If you recieve something other than a standard operating procedure, like a list of basic instructions, know that
+we are just testing our pipeline so respond as if it were a standard operating procedure.

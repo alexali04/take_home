@@ -2,8 +2,7 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 import os
-
-from utils.prompting import Regulatory_API_Prompt
+import json
 
 class Embedder:
     def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
@@ -26,6 +25,7 @@ class VectorDatabase:
         self.index = faiss.IndexFlatL2(self.embedding_dim) # search via cosine similarity
         self.embeddings = []
         self.ids = []
+        self.id_to_clause = {}
         
     def add_document(self, document: str, id: str):
         """
@@ -35,6 +35,7 @@ class VectorDatabase:
         self.index.add(embedding)
         self.embeddings.append(embedding)
         self.ids.append(id)
+        self.id_to_clause[id] = document
 
     def search(self, query: str, k: int = 10) -> list[str]:
         """
@@ -47,16 +48,30 @@ class VectorDatabase:
     
     def construct_database(self, directory: str):
         """
-        Construct the database from a directory of documents.
+        Construct the database from a directory of regulatory jsons.
         """
+
+        count = 0
         for file in os.listdir(directory):
-            with open(os.path.join(directory, file), "r") as f:
-                # need to chunk it into regulatory clauses
-                clauses = self.chunk_to_regulatory_clauses(f.read())
-                for clause in clauses:
-                    self.add_document(clause, file)
+            file_path = os.path.join(directory, file)
+            clauses = json.load(open(file_path, "r"))["clauses"]
+            for clause in clauses:
+                clause = self.convert_to_str(clause)
+                self.add_document(clause, count)
+                count += 1
     
-    def get_relevant_clauses(self, clauses_path: str, k: int = 5) -> list[str]:
+    def convert_to_str(self, clause):
+        return f"{clause['title']} | {clause['text']} | Severity: {clause['severity']} | Consequence Level: {clause['consequence_level']} | Noncompliance: {clause['noncompliance_chance_level']}"
+
+    def get_relevant_clauses(self, clause: str, k: int = 5) -> list[str]:
+        """
+        Get the k most relevant clauses from the database.
+        """
+        relevant_indices = self.search(clause, k)
+        relevant_clauses = [self.id_to_clause[i] for i in relevant_indices]
+        return relevant_clauses
+
+    def get_relevant_clauses_from_path(self, clauses_path: str, k: int = 5) -> list[str]:
         """
         Get the k most relevant clauses from the database.
 
@@ -71,31 +86,23 @@ class VectorDatabase:
         results = []
         clauses = open(clauses_path, "r").read()
         for clause in clauses:
+            relevant_indices = self.search(clause, k)
+            relevant_clauses = [self.id_to_clause[i] for i in relevant_indices]
+            results.append(relevant_clauses)
 
-            results.append(self.search(clause, k))
+        return clauses, results
         
-        assert len(results) == len(clauses)
-        assert len(results[0]) == k
-        return results
-    
-    
- 
 
-def construct_vector_database(args, regulatory_texts_dir: str):
+def construct_vector_database(args, json_dir: str):
     """
-    Construct a vector database from the regulatory texts.
+    Construct a vector database from the regulatory jsons.
 
     Specifically, for each regulatory text, chunk the text into clauses and add to database. 
     """
     embedder = Embedder(args.embedding_model)
     db = VectorDatabase(embedder)
 
-    for file in os.listdir(regulatory_texts_dir):
-        file_path = os.path.join(regulatory_texts_dir, file)
-        with open(file_path, "r") as f:
-            clauses = f.read()
-            for clause in clauses:
-                db.add_document(clause, file_path)
+    db.construct_database(json_dir)
 
     return db
     

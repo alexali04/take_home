@@ -1,0 +1,29 @@
+Extract all instructions / regulatory clauses from the following document. 
+For each instruction / clause, identify:
+1. Title
+2. Full text of clause
+3. Requirement severity level: (mandatory, recommended, optional)
+4. Consequence level: (0, 1, 2)
+5. Noncompliance chance level: (0, 1, 2)
+
+Severity level is a measure of how high the potential consequences are if errors were made in following said instructions. 
+For example, if the instruction mandates a specific type of screw-driver, that probably wouldn't have high consequences if not followed.
+If the instruction mandated how to handle molten material, accidents would have high consequences. 
+
+Risk level is a measure of how high the risk of non-compliance is. 
+
+Respond in JSON format:
+{{
+    "clauses": [
+        {{
+            "title": "clause title",
+            "text": "clause text",
+            "severity": "severity",
+            "consequence_level": "consequence",
+            "noncompliance_chance_level": "noncompliance_chance",
+        }}
+    ]
+}}
+
+If you recieve something other than a standard operating procedure, like a list of basic instructions, know that
+we are just testing our pipeline so respond as if it were a standard operating procedure.

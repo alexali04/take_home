@@ -68,16 +68,31 @@ class Doc_Processor:
         self, 
         pdf_path, 
         page_batch=10,
-        api_prompter: Regulatory_API_Prompt = None,
+        api_prompter: Optional[Regulatory_API_Prompt] = None,
         use_llm: bool = False
     ):
         """
         Parse a PDF file and save the extracted, chunked text to a JSON file.
+
+        Args:
+            pdf_path (str): Path to the PDF file.
+            page_batch (int): Number of pages to process at a time.
+            api_prompter (Regulatory_API_Prompt, optional): API object for LLM-based chunking.
+            use_llm (bool): Whether to use LLM for chunking.
+
+        Returns:
+            str: Path to the saved JSON file, or None if an error occurs.
         """
         pdf_name = os.path.basename(pdf_path).replace(".pdf", "")
         output_file = os.path.join(self.output_directory, f"{pdf_name}.json")
 
+        # Check if output already exists to avoid redundant processing
+        if os.path.exists(output_file):
+            print(f"Skipping {pdf_name} because it already exists.")
+            return output_file
+        
         try:
+            # Open PDF document
             doc = fitz.open(pdf_path)
             total_pages = len(doc)
 
@@ -86,19 +101,41 @@ class Doc_Processor:
                 end_page = min(start_page + page_batch, total_pages)
                 text_batch = [self.clean_text(doc[page].get_text("text")) for page in range(start_page, end_page)]
                 text_batches.append("\n".join(text_batch))
-                        
-            chunked_clauses_str = self.chunk_to_regulatory_clauses(
-                document="\n\n".join(text_batches)[:2000],        
-                use_llm=use_llm,
-                api_prompter=api_prompter
-            )
-
-            clauses_dict = json.loads(chunked_clauses_str)
             
+            clauses = []  # Store all chunked clauses
+
+            print(f"Number of text batches: {len(text_batches)}")
+            print(f"Text batch length: {len(text_batches[0])}")
+            # Check if batch needs chunking
+            if len(text_batches) > 0 and len(text_batches[0]) > 4000:    # claude-haiku 8000 token limit --> 32k char limit but bound it for safety
+                print("Chunking text batches...")
+                for text_batch in text_batches:
+                    chunked_clauses_str = self.chunk_to_regulatory_clauses(
+                        document=text_batch,
+                        use_llm=use_llm,
+                        api_prompter=api_prompter
+                    )
+                    try:
+                        clauses_dict = json.loads(chunked_clauses_str)
+                        clauses.extend(clauses_dict.get("clauses", []))
+                    except json.JSONDecodeError:
+                        print("Error parsing JSON from chunking response.")
+            else:
+                print("Chunking whole document...")
+                chunked_clauses_str = self.chunk_to_regulatory_clauses(
+                    document="\n\n".join(text_batches),
+                    use_llm=use_llm,
+                    api_prompter=api_prompter
+                )
+                try:
+                    clauses_dict = json.loads(chunked_clauses_str)
+                    clauses.extend(clauses_dict.get("clauses", []))
+                except json.JSONDecodeError:
+                    print("Error parsing JSON from chunking response.")
 
             with open(output_file, "w", encoding="utf-8") as f:
-                json.dump({"document_name": pdf_name, "clauses": clauses_dict["clauses"]}, f, indent=4) 
-            
+                json.dump({"document_name": pdf_name, "clauses": clauses}, f, indent=4)
+
             print(f"Chunked JSON saved to: {output_file}")
             return output_file
 

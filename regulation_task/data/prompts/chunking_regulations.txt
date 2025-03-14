@@ -12,12 +12,14 @@ If the instruction mandated how to handle molten material, accidents would have 
 
 Risk level is a measure of how high the risk of non-compliance is. 
 
+Give the text of the extracted clause some level of specificity since legal language is specific.
+
 Respond in JSON format:
 {{
     "clauses": [
         {{
             "title": "clause title",
-            "text": "clause text",
+            "text": "clause exact text",
             "severity": "severity",
             "consequence_level": "consequence",
             "noncompliance_chance_level": "noncompliance_chance",

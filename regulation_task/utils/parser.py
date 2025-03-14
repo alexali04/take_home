@@ -11,5 +11,8 @@ def get_rag_parser():
     parser.add_argument("--extraction_prompt_text", type=str, default="extraction_prompt")
     parser.add_argument("--data_dir", type=str, default="")
     parser.add_argument("--page_batch", type=int, default=10)
+    parser.add_argument("--embedding_model", type=str, default="all-MiniLM-L6-v2")
+    parser.add_argument("--max_pdf_count", type=int, default=2)
+    parser.add_argument("--use_llm_chunking", type=bool, default=False)
     return parser
 

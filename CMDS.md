@@ -8,6 +8,10 @@ python regulation_task/tests/document_store/test_faiss.py
 
 python regulation_task/test_for_compliance.py
 
-
+find regulation_task/data/regulatory_texts -type f -exec wc -c {} + | awk '{ total += $1 } END { print total }'
 ```
+
+10 documents - 3.8 million tokens
+-- claude haiku - spends roughly $3 on extracting / cleaning this
+-- too many API calls? call for document extractions on SOP, document extraction on 
 

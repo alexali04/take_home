@@ -1,6 +1,8 @@
 import os
 import fitz 
 import re
+from typing import Optional
+
 
 class Doc_Processor:
     def __init__(self, pdf_directory="./regulation_task/data/regulations", output_directory="./regulation_task/data/regulatory_texts"):
@@ -14,6 +16,7 @@ class Doc_Processor:
         self.output_directory = output_directory
         os.makedirs(self.output_directory, exist_ok=True)
     
+
     def clean_text(self, text):
         """
         Cleans extracted text by removing boilerplate, fixing formatting, and removing hyphenated words.
@@ -65,7 +68,7 @@ class Doc_Processor:
             print(f"Error processing {pdf_path}: {e}")
 
 
-    def parse_directory_of_pdfs(self, page_batch=5):
+    def parse_directory_of_pdfs(self, page_batch=5, max_pdfs: Optional[int] = None):
         """
         Parse all PDFs in the directory.
         """
@@ -75,11 +78,35 @@ class Doc_Processor:
             return
         
         output_files = []
+        if max_pdfs is not None:
+            pdf_files = pdf_files[:max_pdfs]   # Only process the first max_pdfs PDFs
+
+
         for pdf in pdf_files:
             pdf_path = os.path.join(self.pdf_directory, pdf)
             print(f"Processing {pdf}...")
             self.parse_pdf(pdf_path, page_batch=page_batch)
-
+            
         return output_files
 
 
+
+def extract_regulation_texts(args, data_dir: str):
+    """
+    Process all PDFs in the regulations directory and save the extracted text to the regulatory_texts directory.
+    """
+
+    reg_dir = os.path.join(data_dir, "regulations")
+    regulation_texts_dir = os.path.join(data_dir, "regulatory_texts")
+
+    document_processor = Doc_Processor(
+        pdf_directory=reg_dir,
+        output_directory=regulation_texts_dir
+    )
+
+    document_processor.parse_directory_of_pdfs(
+        page_batch=args.page_batch
+    )
+
+    return regulation_texts_dir
+    

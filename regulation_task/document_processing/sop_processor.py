@@ -24,31 +24,12 @@ practically, domain guided summarization
 
 
 import anthropic
-from dataclasses import dataclass
 import docx
 import dotenv
 import json
-from typing import Optional
+import os
 
-@dataclass
-class Regulatory_API_Prompt():
-    """
-    Defines API call for regulatory clause extraction.  
-
-    Args:
-        (str) model: model to use for API call
-        (str) sys_prompt: system prompt for API call
-        (str) user_prompt: user prompt for API call
-        (int) max_tokens: max tokens for API call
-        (str) assistant_prompt: assistant prompt for API call - what the model begins it's response with
-    """
-    model: str = "claude-3-5-haiku-20241022"
-    sys_prompt: str = "You are a regulatory compliance expert. You are given a document and your job is to extract a numbered list of regulatory clauses from the document."
-    content: str = "Document: "
-    max_tokens: Optional[int] = None
-    assistant_prompt: Optional[str] = None
-
-
+from utils.prompting import Regulatory_API_Prompt
 
 class SOP_Processor():
     """
@@ -112,7 +93,7 @@ class SOP_Processor():
             (str) context: context to use for clause extraction
         
         Returns:
-            (dict) clauses: clauses extracted from the context
+            (str) path to the json file containing the clauses
         """
         if context == "": 
             context = self.get_text_from_docx()
@@ -145,9 +126,35 @@ class SOP_Processor():
         else: 
             return response.content[0].text
 
+def process_sop(args, data_dir: str):
+    data_dir = args.data_dir
 
+    sop_path = os.path.join(data_dir, "sop", args.sop_name)
+    prompt_dir = os.path.join(data_dir, "prompts")
+
+    sop_processor = SOP_Processor(
+        sop_path=sop_path,
+        cut_off=args.cut_off,
+        cut_off_length=args.cut_off_length
+    )
     
-        
+    sys_prompt = open(f"{prompt_dir}/{args.sys_prompt_text}.txt").read()
+    extraction_prompt = open(f"{prompt_dir}/{args.extraction_prompt_text}.txt").read()
+
+    api_prompt = Regulatory_API_Prompt(
+        model=args.model,
+        sys_prompt=sys_prompt,
+        assistant_prompt=None,
+        content=extraction_prompt,
+        max_tokens=2000
+    )
+
+    clause_dict = sop_processor.extract_clauses_from_docx(api_prompt)
+    clauses_path = os.path.join(data_dir, "sop", f"{args.sop_name}_clauses.json")
+    json.dump(clause_dict, open(clauses_path, "w"))
+
+    return clauses_path
+
     
     
 

@@ -1,3 +1,8 @@
+"""
+Warning: Result showing requires local GUI env. 
+"""
+
+
 import cv2
 import numpy as np
 

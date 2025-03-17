@@ -5,110 +5,24 @@ import numpy as np
 from cv_utils.img_utils import (
     display_img_ttb, 
     associate_text_with_symbol,
-    load_img_model
+    load_img_model,
+    nms,
+    clamp_range,
+    get_center,
+    display_graph
 )
-
-# model = torch.hub.load('ultralytics/yolov5', 'custom', path='./computer_vision_task/symbol_extraction/best.pt')
-
-# image_path = './computer_vision_task/data/p&id/images'
-# image = cv2.imread(f"{image_path} + /page_1.jpg")
-# h_img, w_img = image.shape[:2]
-# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-# # Invert threshold to highlight black lines/symbols as white
-# _, thresh = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
-
-# # Morphological closing to connect nearby components
-# kernel = np.ones((5, 5), np.uint8)
-# closed = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=2)
+import networkx as nx
+import matplotlib
+matplotlib.use('Qt5Agg')  # or 'Qt5Agg'
+import matplotlib.pyplot as plt
 
 
-# contours, _ = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-# region_bboxes = []
-# min_area = 50     # tweak as needed (ignore tiny specks)
-# max_area = 1e7    # tweak as needed (ignore absurdly large)
-# for c in contours:
-#     x, y, w, h = cv2.boundingRect(c)
-#     area = w * h
-#     if min_area < area < max_area:
-#         region_bboxes.append((x, y, w, h))
-
-# def expand_box(x, y, w, h, pad, maxW, maxH):
-#     new_x = max(x - pad, 0)
-#     new_y = max(y - pad, 0)
-#     new_w = min(w + 2*pad, maxW - new_x)
-#     new_h = min(h + 2*pad, maxH - new_y)
-#     return (new_x, new_y, new_w, new_h)
-
-# padding = 20
-# expanded_bboxes = []
-# for (bx, by, bw, bh) in region_bboxes:
-#     expanded_bboxes.append(expand_box(bx, by, bw, bh, padding, w_img, h_img))
-
-# # ----------------------------------------------------------------
-# # 6) RUN YOLO ON EACH CROPPED REGION & MAP BACK TO ORIGINAL SPACE
-# # ----------------------------------------------------------------
-# all_detections = []  # will store global (xmin, ymin, xmax, ymax, conf, cls)
-
-# for (ex, ey, ew, eh) in expanded_bboxes:
-#     # Crop the region from the original image
-#     cropped = image[ey:ey + eh, ex:ex + ew]
-
-#     # Detect with YOLO on this smaller image
-#     results = model(cropped)
-#     # results.xyxy[0]: [xmin, ymin, xmax, ymax, conf, class]
-#     detections = results.xyxy[0].cpu().numpy()
-
-#     for *box, conf, cls in detections:
-#         xmin, ymin, xmax, ymax = map(int, box)
-
-#         # Map coordinates from "cropped space" back to "original image" space
-#         global_xmin = ex + xmin
-#         global_ymin = ey + ymin
-#         global_xmax = ex + xmax
-#         global_ymax = ey + ymax
-
-#         all_detections.append((global_xmin, global_ymin, global_xmax, global_ymax, float(conf), int(cls)))
-
-# # ----------------------------------------------------------------
-# # 7) OPTIONAL: NON-MAX SUPPRESSION (Global)
-# #    Because multiple crops can overlap, we might get duplicate boxes.
-# #    We can do a NMS to merge duplicates or close overlaps:
-# # ----------------------------------------------------------------
-# # def nms(detections, iou_threshold=0.5):
-# #     # detections: list of (xmin, ymin, xmax, ymax, conf, cls)
-# #     boxes = np.array([d[:4] for d in detections], dtype=np.float32)
-# #     scores = np.array([d[4] for d in detections], dtype=np.float32)
-# #     idxs = cv2.dnn.NMSBoxes(
-# #         bboxes=boxes.tolist(), 
-# #         scores=scores.tolist(), 
-# #         score_threshold=0.1, 
-# #         nms_threshold=iou_threshold
-# #     )
-# #     # Collect the kept detections
-# #     keep = set(i[0] for i in idxs)  # .dnn.NMSBoxes returns [[idx], [idx], ...]
-# #     final = [d for i, d in enumerate(detections) if i in keep]
-# #     return final
-
-# # final_detections = nms(all_detections, iou_threshold=0.5)
-
-
-# output_img = image.copy()
-
-# for (xmin, ymin, xmax, ymax, conf, cls) in all_detections:
-#     cv2.rectangle(output_img, (xmin, ymin), (xmax, ymax), (0, 0, 255), 2)
-#     label = f"Class={cls}, Conf={conf:.2f}"
-#     cv2.putText(output_img, label, (xmin, max(ymin - 5, 0)),
-#                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
-
-# # Show the result (requires a local GUI environment)
-# cv2.imshow("Two-Pass YOLO (Segment + Crop)", output_img)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
-
-
-def detect_symbols_and_text(model, image_path, show_img: bool = False):
+def detect_symbols(model, image_path, show_img: bool = False):
+    """
+    Detects symbols in an image using Yolov5 model.
+    P&ID images are processed in tiles to disentangle close elements. 
+    Each tile is processed with YOLO and then mapped back to original image space. 
+    """
     image = cv2.imread(image_path)
     h_img, w_img = image.shape[:2]
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -119,14 +33,6 @@ def detect_symbols_and_text(model, image_path, show_img: bool = False):
     tile_size = 1024  # width/height of each tile
     overlap = 200     # overlap in pixels between tiles
 
-    # A function to ensure we don't exceed the image boundary
-    def clamp_range(start, length, max_val):
-        end = start + length
-        if end > max_val:
-            end = max_val
-            start = max(end - length, 0)
-        return start, end
-    
     all_detections = []  # will collect (xmin, ymin, xmax, ymax, conf, cls)
 
     for row in range(0, h_img, tile_size - overlap):
@@ -148,11 +54,10 @@ def detect_symbols_and_text(model, image_path, show_img: bool = False):
             results = model(tile)
             detections = results.xyxy[0].cpu().numpy()
 
-            # Map each detection from tile-space -> global-space
+            # tile-space -> global-space
             for *box, conf, cls in detections:
                 xmin, ymin, xmax, ymax = map(int, box)
 
-                # Convert local tile coords to global image coords
                 global_xmin = col_start + xmin
                 global_ymin = row_start + ymin
                 global_xmax = col_start + xmax
@@ -160,244 +65,315 @@ def detect_symbols_and_text(model, image_path, show_img: bool = False):
 
                 all_detections.append((global_xmin, global_ymin, global_xmax, global_ymax, float(conf), int(cls)))
 
-    # ----------------------------------------------------------------
-    # 5) OPTIONAL: GLOBAL NMS
-    #    We can use OpenCV's DNN NMS or a custom one to merge duplicates
-    # ----------------------------------------------------------------
-    def nms(detections, iou_threshold=0.5, score_threshold=0.1):
-        """
-        detections: list of (xmin, ymin, xmax, ymax, conf, cls)
-        """
-        if len(detections) == 0:
-            return []
-
-        boxes = np.array([d[:4] for d in detections], dtype=np.float32)
-        scores = np.array([d[4] for d in detections], dtype=np.float32)
-        
-        # Convert to list of [x, y, width, height]
-        # If your detection is (xmin, ymin, xmax, ymax),
-        # NMSBoxes expects [x, y, width, height].
-        widths = boxes[:, 2] - boxes[:, 0]
-        heights = boxes[:, 3] - boxes[:, 1]
-        bboxes_for_nms = []
-        for i in range(len(boxes)):
-            x, y = boxes[i, 0], boxes[i, 1]
-            w, h = widths[i], heights[i]
-            bboxes_for_nms.append([float(x), float(y), float(w), float(h)])
-        
-        # Run NMS
-        indices = cv2.dnn.NMSBoxes(
-            bboxes=bboxes_for_nms,
-            scores=scores.tolist(),
-            score_threshold=score_threshold,
-            nms_threshold=iou_threshold
-        )
-        
-        # If indices is empty or None, return an empty list
-        if indices is None or len(indices) == 0:
-            return []
-        
-        # Otherwise, indices is something like [[0], [2], ...]
-        # Flatten it and use it to index
-        if isinstance(indices, np.ndarray):
-            # In recent OpenCV versions, indices might be an array of shape (N,1)
-            indices = indices.flatten()
-        else:
-            # If it's a list of lists
-            indices = [i[0] for i in indices]
-
-        final = [detections[i] for i in indices]
-        return final
-
     final_detections = nms(all_detections, iou_threshold=0.5)
 
-    output_img = processed_input.copy()
+    if show_img:
+        output_img = processed_input.copy()
 
-    for (xmin, ymin, xmax, ymax, conf, cls) in final_detections:
-        cv2.rectangle(output_img, (xmin, ymin), (xmax, ymax), (0, 0, 255), 2)
+        for (xmin, ymin, xmax, ymax, conf, cls) in final_detections:
+            cv2.rectangle(output_img, (xmin, ymin), (xmax, ymax), (0, 0, 255), 2)
         label = f"Cls={cls}, Conf={conf:.2f}"
         cv2.putText(output_img, label, (xmin, max(ymin - 5, 0)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1)
 
-    cv2.imshow("Tiled YOLO + Thickening", output_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+        cv2.imshow("Tiled YOLO + Thickening", output_img)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    return final_detections
 
 
+def detect_text(image_path):
+    """
+    Detects text in an image using Tesseract OCR.
+    """
+    image = cv2.imread(image_path)
 
+    config_tesseract = "--psm 6"
+    data = pytesseract.image_to_data(image, config=config_tesseract, output_type=pytesseract.Output.DICT)
 
-    # # 1st pass: detect large symbols
-    # results = model(processed_input)
-    # detections = results.xyxy[0].cpu().numpy()
+    text_bboxes = []
+    num_boxes = len(data['level'])
+    for i in range(num_boxes):
+        # If confidence is high enough and the text is not empty
+        if int(data['conf'][i]) > 60 and data['text'][i].strip() != '':
+            x = data['left'][i]
+            y = data['top'][i]
+            w = data['width'][i]
+            h = data['height'][i]
+            recognized_text = data['text'][i]
 
-    # symbol_bboxes = []
-    # for *box, conf, cls in detections:
-    #     xmin, ymin, xmax, ymax = map(int, box)
-    #     symbol_bboxes.append((xmin, ymin, xmax, ymax, conf, int(cls)))
+            # Store (xmin, ymin, xmax, ymax, text)
+            text_bboxes.append((x, y, x + w, y + h, recognized_text))
     
-    # # Display results from first pass
-    # output_img = image.copy()
-    
-    # for (xmin, ymin, xmax, ymax, conf, cls) in symbol_bboxes:
-    #     cv2.rectangle(output_img, (xmin, ymin), (xmax, ymax), (0, 0, 255), 2)
-    #     label = f"Class={cls}, Conf={conf:.2f}"
-    #     cv2.putText(output_img, label, (xmin, max(ymin - 5, 0)),
-    #                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+    return text_bboxes
 
-    # if show_img:
-    #     cv2.imshow("First Pass YOLO Detection", output_img)
-    #     cv2.waitKey(0)
-    #     cv2.destroyAllWindows()
-    
-    # return
-   
-   
-   
-   
-    # # Invert threshold to highlight black lines/symbols as white
-    # _, thresh = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
+def detect_arrows_with_strips(
+    image_path, 
+    strip_size=300, 
+    min_length=50, 
+    show_img=True
+):
+    """
+    Detect axis-aligned arrows/lines by breaking the image into horizontal and vertical strips.
+    Returns a list of arrow bounding boxes: [{'bbox': (xmin, ymin, xmax, ymax), 'orientation': 'horizontal'}, ...]
 
-    # # Morphological closing to connect nearby components
-    # kernel = np.ones((5, 5), np.uint8)
-    # closed = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel, iterations=2)
+    args:
+        image_path: Path to the P&ID image
+        strip_size: The size (in pixels) of each strip (height for horizontal strips or width for vertical strips)
+        min_length: Minimum bounding box dimension to accept as a line
+        show_img: Whether to display the final overlay
+    """
+    original = cv2.imread(image_path)
+    if original is None:
+        raise FileNotFoundError(f"Could not load image: {image_path}")
 
-    # contours, _ = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    h, w = original.shape[:2]
 
-    # region_bboxes = []
-    # min_area = 50     # tweak as needed (ignore tiny specks)
-    # max_area = 1e7    # tweak as needed (ignore absurdly large)
-    # for c in contours:
-    #     x, y, w, h = cv2.boundingRect(c)
-    #     area = w * h
-    #     if min_area < area < max_area:
-    #         region_bboxes.append((x, y, w, h))
+    # 1) Convert to grayscale and invert-threshold so lines become white (255) on black (0)
+    gray = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
+    # If lines are black on white, invert them:
+    _, binary = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV)
 
-    # def expand_box(x, y, w, h, pad, maxW, maxH):
-    #     new_x = max(x - pad, 0)
-    #     new_y = max(y - pad, 0)
-    #     new_w = min(w + 2*pad, maxW - new_x)
-    #     new_h = min(h + 2*pad, maxH - new_y)
-    #     return (new_x, new_y, new_w, new_h)
+    horizontal_bboxes = []
+    vertical_bboxes   = []
 
-    # padding = 20
-    # expanded_bboxes = []
-    # for (bx, by, bw, bh) in region_bboxes:
-    #     expanded_bboxes.append(expand_box(bx, by, bw, bh, padding, w_img, h_img))
+    # A) DETECT HORIZONTAL LINES BY BREAKING INTO HORIZONTAL STRIPS
+    h_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (30, 1))  # wide horizontally
 
-    # # ----------------------------------------------------------------
-    # # 6) RUN YOLO ON EACH CROPPED REGION & MAP BACK TO ORIGINAL SPACE
-    # # ----------------------------------------------------------------
-    # all_detections = []  # will store global (xmin, ymin, xmax, ymax, conf, cls)
+    row_start = 0
+    while row_start < h:
+        row_end = min(row_start + strip_size, h)
 
-    # for (ex, ey, ew, eh) in expanded_bboxes:
-    #     # Crop the region from the original image
-    #     cropped = image[ey:ey + eh, ex:ex + ew]
+        # Extract the horizontal strip from [row_start:row_end]
+        strip_roi = binary[row_start:row_end, 0:w]  # full width
 
-    #     # Detect with YOLO on this smaller image
-    #     results = model(cropped)
-    #     # results.xyxy[0]: [xmin, ymin, xmax, ymax, conf, class]
-    #     detections = results.xyxy[0].cpu().numpy()
+        # Morphological operations to highlight horizontal lines
+        # Erode, then dilate
+        h_lines = cv2.erode(strip_roi, h_kernel, iterations=1)
+        h_lines = cv2.dilate(h_lines, h_kernel, iterations=1)
 
-    #     for *box, conf, cls in detections:
-    #         xmin, ymin, xmax, ymax = map(int, box)
+        contours, _ = cv2.findContours(h_lines, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    #         # Map coordinates from "cropped space" back to "original image" space
-    #         global_xmin = ex + xmin
-    #         global_ymin = ey + ymin
-    #         global_xmax = ex + xmax
-    #         global_ymax = ey + ymax
+        for c in contours:
+            x, y, w_box, h_box = cv2.boundingRect(c)
 
-    #         all_detections.append((global_xmin, global_ymin, global_xmax, global_ymax, float(conf), int(cls)))
+            global_x = x
+            global_y = row_start + y
 
-    # # ----------------------------------------------------------------
-    # # 7) OPTIONAL: NON-MAX SUPPRESSION (Global)
-    # #    Because multiple crops can overlap, we might get duplicate boxes.
-    # #    We can do a NMS to merge duplicates or close overlaps:
-    # # ----------------------------------------------------------------
-    # # def nms(detections, iou_threshold=0.5):
-    # #     # detections: list of (xmin, ymin, xmax, ymax, conf, cls)
-    # #     boxes = np.array([d[:4] for d in detections], dtype=np.float32)
-    # #     scores = np.array([d[4] for d in detections], dtype=np.float32)
-    # #     idxs = cv2.dnn.NMSBoxes(
-    # #         bboxes=boxes.tolist(), 
-    # #         scores=scores.tolist(), 
-    # #         score_threshold=0.1, 
-    # #         nms_threshold=iou_threshold
-    # #     )
-    # #     # Collect the kept detections
-    # #     keep = set(i[0] for i in idxs)  # .dnn.NMSBoxes returns [[idx], [idx], ...]
-    # #     final = [d for i, d in enumerate(detections) if i in keep]
-    # #     return final
+            if w_box < min_length and h_box < min_length:
+                continue
 
-    # # final_detections = nms(all_detections, iou_threshold=0.5)
+            orientation = "horizontal"
+            horizontal_bboxes.append({
+                'bbox': (global_x, global_y, global_x + w_box, global_y + h_box),
+                'orientation': orientation
+            })
+
+        row_start += strip_size
+
+    # B) DETECT VERTICAL LINES BY BREAKING INTO VERTICAL STRIPS
+    v_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, 30))  # tall vertically
+
+    col_start = 0
+    while col_start < w:
+        col_end = min(col_start + strip_size, w)
+
+        # Extract the vertical strip from [col_start:col_end]
+        strip_roi = binary[0:h, col_start:col_end]  # full height
+
+        # Morphological operations to highlight vertical lines
+        v_lines = cv2.erode(strip_roi, v_kernel, iterations=1)
+        v_lines = cv2.dilate(v_lines, v_kernel, iterations=1)
+
+        contours, _ = cv2.findContours(v_lines, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        for c in contours:
+            x, y, w_box, h_box = cv2.boundingRect(c)
+            # x,y are local to the strip, map x to global coordinate
+            global_x = col_start + x
+            global_y = y
+
+            if w_box < min_length and h_box < min_length:
+                continue
+
+            orientation = "vertical"
+            vertical_bboxes.append({
+                'bbox': (global_x, global_y, global_x + w_box, global_y + h_box),
+                'orientation': orientation
+            })
+
+        # Next vertical strip
+        col_start += strip_size
 
 
-    # output_img = image.copy()
+    all_arrows = horizontal_bboxes + vertical_bboxes
 
-    # for (xmin, ymin, xmax, ymax, conf, cls) in all_detections:
-    #     cv2.rectangle(output_img, (xmin, ymin), (xmax, ymax), (0, 0, 255), 2)
-    #     label = f"Class={cls}, Conf={conf:.2f}"
-    #     cv2.putText(output_img, label, (xmin, max(ymin - 5, 0)),
-    #                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+    if show_img:
+        overlay = original.copy()
+        for i, arrow in enumerate(all_arrows):
+            (xmin, ymin, xmax, ymax) = arrow['bbox']
+            orientation = arrow['orientation']
+            # color red for bounding box
+            color = (0, 0, 255)
+            cv2.rectangle(overlay, (xmin, ymin), (xmax, ymax), color, 2)
+            label = f"A{i}_{orientation}"
+            cv2.putText(
+                overlay, label, 
+                (xmin, max(ymin-5, 0)), 
+                cv2.FONT_HERSHEY_SIMPLEX, 
+                0.5, color, 1
+            )
 
-    # # Show the result (requires a local GUI environment)
-    # cv2.imshow("Two-Pass YOLO (Segment + Crop)", output_img)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+        cv2.imshow("Arrows via horizontal/vertical strips", overlay)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+
+    return all_arrows
+
+
+
+def build_pid_graph(symbol_bboxes, arrow_bboxes):
+    """
+    Build a directed graph of P&ID components and arrows.
+
+    symbol_bboxes: list of (xmin, ymin, xmax, ymax, conf, cls, label_str)
+    arrow_bboxes: list of {'bbox': (xmin, ymin, xmax, ymax), 'orientation': 'horizontal'}
+
+    Returns a NetworkX DiGraph.
+    """
+
+    G = nx.DiGraph()
+
+    # 1) Add nodes for each symbol
+    for i, sym in enumerate(symbol_bboxes):
+        xmin, ymin, xmax, ymax, conf, cls, label_str = sym
+        node_id = f"symbol_{i}"
+
+        # Store bounding box, label, class, etc. as node attributes
+        G.add_node(node_id, 
+                   bbox=(xmin, ymin, xmax, ymax), 
+                   conf=conf, 
+                   cls=cls,
+                   label=label_str)
+
+    # 2) For each arrow, connect nearest symbols
+    for j, arrow in enumerate(arrow_bboxes):
+        (axmin, aymin, axmax, aymax) = arrow['bbox']
+        orientation = arrow['orientation']
+
+        # Get endpoints
+        if orientation == "horizontal":
+            # Left endpoint and right endpoint
+            centerY = (aymin + aymax) // 2
+            left_pt  = (axmin, centerY)
+            right_pt = (axmax, centerY)
+            endpoints = [left_pt, right_pt]
+        else:
+            # orientation == "vertical"
+            centerX = (axmin + axmax) // 2
+            top_pt    = (centerX, aymin)
+            bottom_pt = (centerX, aymax)
+            endpoints = [top_pt, bottom_pt]
+
+        # Find nearest symbol for each endpoint
+        connected_symbols = []
+        for pt in endpoints:
+            min_dist = float('inf')
+            nearest_symbol_id = None
+            px, py = pt
+
+            for i, sym in enumerate(symbol_bboxes):
+                sxmin, symin, sxmax, symax, _, _, _ = sym
+                # symbol center
+                sx, sy = get_center([sxmin, symin, sxmax, symax])
+                dist = np.sqrt((px - sx)**2 + (py - sy)**2)
+                if dist < min_dist:
+                    min_dist = dist
+                    nearest_symbol_id = f"symbol_{i}"
+
+            if nearest_symbol_id is not None:
+                connected_symbols.append(nearest_symbol_id)
+
+        # If both endpoints found a symbol, connect them
+        # This can be one edge or two edges depending on your direction logic
+        if len(connected_symbols) == 2:
+            # For a purely undirected line, you can add one edge
+            # G.add_edge(connected_symbols[0], connected_symbols[1], arrow_id=f"arrow_{j}", orientation=orientation)
+
+            # If you want a directional edge (assuming left->right or top->bottom):
+            # For horizontal: left->right
+            if orientation == 'horizontal':
+                # Compare axmin vs axmax
+                left_sym, right_sym = connected_symbols
+                # Dist check: to see which symbol is actually on the left or the right
+                # or you can rely on index in endpoints
+                G.add_edge(left_sym, right_sym, arrow_id=f"arrow_{j}", orientation='left-to-right')
+            else:
+                # vertical: top->bottom
+                top_sym, bottom_sym = connected_symbols
+                G.add_edge(top_sym, bottom_sym, arrow_id=f"arrow_{j}", orientation='top-to-bottom')
+
+    return G
+
+
+
+
+
 
 
 def detect_symbols_text_for_dir(image_dir, show_img: bool = False, weight_path: str = "./computer_vision_task/symbol_extraction/best.pt"):
     images = [f for f in os.listdir(image_dir) if f.lower().endswith('.jpeg') or f.lower().endswith('.jpg')]
-
     model = load_img_model(weight_path)
 
-    for image in images:
-        image_path = os.path.join(image_dir, image)
-        detect_symbols_and_text(model, image_path, show_img)
-    
+    for i, image_name in enumerate(images):
+        image_path = os.path.join(image_dir, image_name)
+
+        # list of (xmin, ymin, xmax, ymax, conf, cls)
+        symbols_bboxes = detect_symbols(model, image_path, show_img=False)
+        print(f"Finishing detecting symbols for {image_name}")
+
+        # list of (xmin, ymin, xmax, ymax, text)
+        text_bboxes = detect_text(image_path)
+        print(f"Finishing detecting text for {image_name}")
+
+        # list of {text, text_box, symbol_box}
+        associations = associate_text_with_symbol(text_bboxes, symbols_bboxes)
+        print(f"Finishing associating text with symbols for {image_name}")
+
+        # list of (xmin, ymin, xmax, ymax, conf, cls, label_str)
+        enhanced_symbol_bboxes = []
+        for sym in symbols_bboxes:
+
+            (xmin, ymin, xmax, ymax, conf, cls) = sym
+            # gather all text pieces that associate to this bounding box
+            matched_texts = []
+            for assoc in associations:
+                sb = assoc['symbol_box']  # (xmin, ymin, xmax, ymax)
+                if (sb[0] == xmin and sb[1] == ymin and 
+                    sb[2] == xmax and sb[3] == ymax):
+                    matched_texts.append(assoc['text'])
+            
+            label_str = " ".join(matched_texts) if matched_texts else ""
+            enhanced_symbol_bboxes.append((xmin, ymin, xmax, ymax, conf, cls, label_str))
+        
 
 
+        arrow_bboxes = detect_arrows_with_strips(image_path, show_img=False)
+        # print(f"Finishing detecting arrows for {image_name}")
 
+        # 5) Build the P&ID graph
+        pid_graph = build_pid_graph(enhanced_symbol_bboxes, arrow_bboxes)
+        print(f"Built graph for {image_name} with {len(pid_graph.nodes)} nodes and {len(pid_graph.edges)} edges.")
 
+        # 6) Visualize detected components
+        if show_img:
+            # We pass in our new 'enhanced_symbol_bboxes' plus the arrow boxes to the display function
+            display_img_ttb(image_path, symbols_bboxes, text_bboxes, associations, arrow_bboxes)
 
+            # but display reconstructed graph too
+            display_graph(pid_graph, path=f"{image_dir}/graphs", name=str(i))
 
-
-
-
-# exit()
-
-# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-# _, thresh = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)     # converts to mostly black image
-
-# results = model(image)
-
-# detections = results.xyxy[0].cpu().numpy()
-
-# symbol_bboxes = []
-# for *box, conf, cls in detections:
-#     xmin, ymin, xmax, ymax = map(int, box)
-#     symbol_bboxes.append((xmin, ymin, xmax, ymax, conf, int(cls)))
-
-
-# config_tesseract = "--psm 6"
-# data = pytesseract.image_to_data(image, config=config_tesseract, output_type=pytesseract.Output.DICT)
-# text_bboxes = []
-# num_boxes = len(data['level'])
-
-# for i in range(num_boxes):
-#     # If confidence is high enough and the text is not empty
-#     if int(data['conf'][i]) > 60 and data['text'][i].strip() != '':
-#         x = data['left'][i]
-#         y = data['top'][i]
-#         w = data['width'][i]
-#         h = data['height'][i]
-#         recognized_text = data['text'][i]
-
-#         # Store (xmin, ymin, xmax, ymax, text)
-#         text_bboxes.append((x, y, x + w, y + h, recognized_text))
-
-# associations = associate_text_with_symbol(text_bboxes, symbol_bboxes)
-
-# display_img_ttb(image, symbol_bboxes, text_bboxes, associations)
+         
 
 

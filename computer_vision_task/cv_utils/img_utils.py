@@ -5,6 +5,8 @@ Warning: Result showing requires local GUI env.
 import cv2
 import numpy as np
 import torch
+import networkx as nx
+import os
 
 def load_img_model(weights_path):
     """
@@ -41,7 +43,7 @@ def associate_text_with_symbol(text_bboxes, symbol_bboxes):
                 min_dist = dist
                 closest_symbol_idx = i
         
-        if closest_symbol_idx is not None:
+        if closest_symbol_idx is not None and min_dist < 200:
             associations.append({
                     'text': tb[4],
                     'text_box': tb[:4],
@@ -51,17 +53,16 @@ def associate_text_with_symbol(text_bboxes, symbol_bboxes):
 
     return associations
 
-
         
 
-def display_img_ttb(image, symbol_bboxes, text_bboxes, associations):
+def display_img_ttb(image_path, symbol_bboxes, text_bboxes, associations, arrow_bboxes=None):
     # don't overwrite original
-    output_img = image.copy()
+    output_img = cv2.imread(image_path).copy()
 
     # draw symbol bboxes
     for (xmin, ymin, xmax, ymax, conf, cls) in symbol_bboxes:
         cv2.rectangle(output_img, (xmin, ymin), (xmax, ymax), (0, 0, 255), 2)
-
+    
     # text bboxes + labeling
     for (xmin, ymin, xmax, ymax, txt) in text_bboxes:
         cv2.rectangle(output_img, (xmin, ymin), (xmax, ymax), (0, 255, 0), 2)
@@ -75,9 +76,86 @@ def display_img_ttb(image, symbol_bboxes, text_bboxes, associations):
         symbol_center = ((sb[0] + sb[2]) // 2, (sb[1] + sb[3]) // 2)
         cv2.line(output_img, text_center, symbol_center, (255, 0, 0), 2)
     
+    # draw arrows
+    for arrow in arrow_bboxes:
+        cv2.rectangle(output_img, (arrow['bbox'][0], arrow['bbox'][1]), (arrow['bbox'][2], arrow['bbox'][3]), (0, 0, 255), 2)
+    
     cv2.imshow('Detected Symbols & Text Associations', output_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
     
-    
+def nms(detections, iou_threshold=0.5, score_threshold=0.1):
+        """
+        detections: list of (xmin, ymin, xmax, ymax, conf, cls)
+        """
+        if len(detections) == 0:
+            return []
+
+        boxes = np.array([d[:4] for d in detections], dtype=np.float32)
+        scores = np.array([d[4] for d in detections], dtype=np.float32)
+        
+        # Convert to list of [x, y, width, height]
+        # If your detection is (xmin, ymin, xmax, ymax),
+        # NMSBoxes expects [x, y, width, height].
+        widths = boxes[:, 2] - boxes[:, 0]
+        heights = boxes[:, 3] - boxes[:, 1]
+        bboxes_for_nms = []
+        for i in range(len(boxes)):
+            x, y = boxes[i, 0], boxes[i, 1]
+            w, h = widths[i], heights[i]
+            bboxes_for_nms.append([float(x), float(y), float(w), float(h)])
+        
+        # Run NMS
+        indices = cv2.dnn.NMSBoxes(
+            bboxes=bboxes_for_nms,
+            scores=scores.tolist(),
+            score_threshold=score_threshold,
+            nms_threshold=iou_threshold
+        )
+        
+        # If indices is empty or None, return an empty list
+        if indices is None or len(indices) == 0:
+            return []
+        
+        # Otherwise, indices is something like [[0], [2], ...]
+        # Flatten it and use it to index
+        if isinstance(indices, np.ndarray):
+            # In recent OpenCV versions, indices might be an array of shape (N,1)
+            indices = indices.flatten()
+        else:
+            # If it's a list of lists
+            indices = [i[0] for i in indices]
+
+        final = [detections[i] for i in indices]
+        return final
+
+
+def clamp_range(start, length, max_val):
+        end = start + length
+        if end > max_val:
+            end = max_val
+            start = max(end - length, 0)
+        return start, end
+
+
+
+import matplotlib.pyplot as plt
+import networkx as nx
+
+def display_graph(G, path, name):
+    os.makedirs(path, exist_ok=True)
+    pos = {}
+    for node, data in G.nodes(data=True):
+        (xmin, ymin, xmax, ymax) = data['bbox']
+        cx = (xmin + xmax) / 2
+        cy = (ymin + ymax) / 2
+        pos[node] = (cx, -cy)
+
+    labels = {n: G.nodes[n].get('label', n) for n in G.nodes()}
+
+    plt.figure(figsize=(10, 6))
+    nx.draw(G, pos=pos, labels=labels, with_labels=True, node_size=600, font_size=8, arrows=True)
+    plt.title("P&ID Graph")
+    plt.savefig(f"{path}/myplot_{name}.png")
+    plt.close()  # <--- Make sure you have this at the end

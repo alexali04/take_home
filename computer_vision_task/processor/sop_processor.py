@@ -1,6 +1,7 @@
 import anthropic
 import dotenv
 from typing import Optional
+import docx
 
 class Regulatory_API_Prompt:
     """
@@ -33,7 +34,7 @@ class Regulatory_API_Prompt:
         self.content = self.original_content
 
 
-def extract_clauses_from_docx(api_prompt: Regulatory_API_Prompt, context: str = ""):
+def get_discrepancies(api_prompt: Regulatory_API_Prompt, context: str = ""):
     """
     Args:
         (Regulatory_API_Prompt) api_prompt: API prompt to use for clause extraction
@@ -44,6 +45,8 @@ def extract_clauses_from_docx(api_prompt: Regulatory_API_Prompt, context: str = 
     """
 
     api_prompt.content += context
+
+    print(f"Context Length: {len(api_prompt.content)}")
 
     api_key = dotenv.get_key(".env", "ANTHROPIC_API_KEY")
 
@@ -59,11 +62,34 @@ def extract_clauses_from_docx(api_prompt: Regulatory_API_Prompt, context: str = 
     
 
     client = anthropic.Anthropic(api_key=api_key)
-    response = client.messages.create(
+    response_stream = client.messages.create(
         model=api_prompt.model,
         max_tokens=api_prompt.max_tokens,
         system=api_prompt.sys_prompt,
-        messages=messages
+        messages=messages,
+        stream=True
     )
 
-    return response.content[0].text
+    all_text = []
+    for chunk in response_stream:
+        # chunk is typically a dict-like object with chunk.content
+        if chunk.type == "completion":
+            # 'event.completion' is the text
+            if chunk.completion:
+                all_text.append(chunk.completion)
+
+    return "".join(all_text)
+
+
+def read_sop(sop_path: str):
+    """
+    Args:
+        (str) sop_path: path to SOP
+
+    Since sop is a docx file, we need to read it as a docx file.
+    """
+    doc = docx.Document(sop_path)
+    paras = []
+    for para in doc.paragraphs:
+        paras.append(para.text)
+    return "\n".join(paras)

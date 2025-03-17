@@ -12,9 +12,7 @@ from cv_utils.img_utils import (
     display_graph
 )
 import networkx as nx
-import matplotlib
-matplotlib.use('Qt5Agg')  # or 'Qt5Agg'
-import matplotlib.pyplot as plt
+from networkx.readwrite import json_graph
 
 
 def detect_symbols(model, image_path, show_img: bool = False):
@@ -107,6 +105,7 @@ def detect_text(image_path):
             text_bboxes.append((x, y, x + w, y + h, recognized_text))
     
     return text_bboxes
+
 
 def detect_arrows_with_strips(
     image_path, 
@@ -232,7 +231,6 @@ def detect_arrows_with_strips(
     return all_arrows
 
 
-
 def build_pid_graph(symbol_bboxes, arrow_bboxes):
     """
     Build a directed graph of P&ID components and arrows.
@@ -317,15 +315,11 @@ def build_pid_graph(symbol_bboxes, arrow_bboxes):
     return G
 
 
-
-
-
-
-
-def detect_symbols_text_for_dir(image_dir, show_img: bool = False, weight_path: str = "./computer_vision_task/symbol_extraction/best.pt"):
+def construct_graphs_for_dir(image_dir, show_img: bool = False, weight_path: str = "./computer_vision_task/symbol_extraction/best.pt"):
     images = [f for f in os.listdir(image_dir) if f.lower().endswith('.jpeg') or f.lower().endswith('.jpg')]
     model = load_img_model(weight_path)
 
+    graphs = []
     for i, image_name in enumerate(images):
         image_path = os.path.join(image_dir, image_name)
 
@@ -356,15 +350,15 @@ def detect_symbols_text_for_dir(image_dir, show_img: bool = False, weight_path: 
             
             label_str = " ".join(matched_texts) if matched_texts else ""
             enhanced_symbol_bboxes.append((xmin, ymin, xmax, ymax, conf, cls, label_str))
-        
-
 
         arrow_bboxes = detect_arrows_with_strips(image_path, show_img=False)
-        # print(f"Finishing detecting arrows for {image_name}")
+        print(f"Finishing detecting arrows for {image_name}")
 
         # 5) Build the P&ID graph
         pid_graph = build_pid_graph(enhanced_symbol_bboxes, arrow_bboxes)
         print(f"Built graph for {image_name} with {len(pid_graph.nodes)} nodes and {len(pid_graph.edges)} edges.")
+
+        graphs.append(json_graph.node_link_data(pid_graph))
 
         # 6) Visualize detected components
         if show_img:
@@ -373,6 +367,8 @@ def detect_symbols_text_for_dir(image_dir, show_img: bool = False, weight_path: 
 
             # but display reconstructed graph too
             display_graph(pid_graph, path=f"{image_dir}/graphs", name=str(i))
+        
+    return graphs
 
          
 

@@ -1,0 +1,16 @@
+Given a standard operating procedure (SOP) and a JSON graph
+that represents a P&ID diagram, find the discrepancy between the SOP and the P&ID diagram.
+
+The SOP is a list of instructions that are laid out in a linear fashion.
+The P&ID diagram is a JSON graph that represents the P&ID diagram.
+
+Report the discrepancy in the following format:
+{
+    "discrepancy": "<Description of discrepancy>",
+    "severity": "low/medium/high"
+}
+
+Do not preamble or postamble the response. I should
+be able to copy and paste the response into a JSON file.
+
+

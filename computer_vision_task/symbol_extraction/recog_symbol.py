@@ -356,6 +356,7 @@ def construct_graphs_for_dir(image_dir, show_img: bool = False, weight_path: str
 
         # 5) Build the P&ID graph
         pid_graph = build_pid_graph(enhanced_symbol_bboxes, arrow_bboxes)
+        breakpoint()
         print(f"Built graph for {image_name} with {len(pid_graph.nodes)} nodes and {len(pid_graph.edges)} edges.")
 
         graphs.append(json_graph.node_link_data(pid_graph))

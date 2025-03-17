@@ -20,7 +20,6 @@ def main(args):
     # group symbols / text from images
     weights_path = "./computer_vision_task/symbol_extraction/best.pt"
     graphs = construct_graphs_for_dir(pid_img_path, show_img=False, weight_path=weights_path)
-    breakpoint()
 
     # find discrepancy between sop and diagram
     # 1st, we find instructions for the LLM
@@ -41,6 +40,7 @@ def main(args):
     for graph in graphs:
         discrepancies = get_discrepancies(api_prompt, str(graph))
         api_prompt.reset_content()
+        print(api_prompt.content[-500:])
         print(discrepancies)
         
 

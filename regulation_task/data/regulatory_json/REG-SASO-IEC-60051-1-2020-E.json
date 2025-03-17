@@ -1,0 +1,159 @@
+{
+    "document_name": "REG-SASO-IEC-60051-1-2020-E",
+    "clauses": [
+        {
+            "title": "Voltmeter Definition",
+            "text": "instrument intended to measure the value of a voltage",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Ohmmeter Definition",
+            "text": "resistance meter instrument intended to measure electrical resistance",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Wattmeter Definition",
+            "text": "instrument intended to measure active power",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Instrument Lead Definition",
+            "text": "lead comprising one or more conductors, specially designed for interconnecting measuring instruments to external circuits or to accessories",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Reference Conditions Definition",
+            "text": "appropriate set of specified values and/or ranges of values of influence quantities under which the smallest permissible uncertainties of a measuring instrument are specified",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Instruments and Accessories Description",
+            "text": "Instruments and/or accessories shall be described according to their methods of operation or their nature as given in clause 3 and/or by their special characteristics as given in the relevant parts.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Environmental Conditions Description",
+            "text": "Instruments and/or accessories shall be described according to their environmental conditions in Group A, Group B, and Group C",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Compliance with Standards",
+            "text": "Instruments and accessories marked with a class index shall comply with the relevant requirements of this standard relating to their class index.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Electrical Safety Requirements",
+            "text": "Relevant safety requirements of IEC 61010-1:2010 and IEC 61010-2-030:2010 shall be applied.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Constructional Safety",
+            "text": "An instrument and/or an accessory shall not cause a danger to the operator when in service and under normal operating conditions.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Multi-range and Multi-scale Instruments Measurement Requirements",
+            "text": "For multi-range and/or multi-scale instruments, the above requirements shall be fulfilled for at least one measuring range or scale.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Scale Division Accuracy",
+            "text": "The divisions shall be appropriate to the index of class of the instrument, namely the uncertainty of estimate value by visual shall not exceed the specification for class index.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Scale Numbering",
+            "text": "The numerals of the scale marked on the dial should preferably not have more than three digits. SI units and their prefixes should be used in association with the scale numbering.",
+            "severity": "recommended",
+            "consequence_level": 0,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Deflection Direction",
+            "text": "The direction of deflection of the index of an instrument shall be from left to right or from bottom to top with increasing measured quantity. When the angular deflection of the index exceeds 180\u00b0, the deflection with increasing measured quantities should be clockwise.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Terminal Marking Requirements",
+            "text": "The marking shall be applied on or adjacent to the relevant terminal.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Terminal Marking Space Requirements",
+            "text": "If there is insufficient space adjacent to a terminal for the marking specified, a permanently attached nameplate shall be provided having details of the terminals and identifying them in an unambiguous way.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Terminal Marking Legibility",
+            "text": "The markings shall be and remain legible and indelible and of a colour which contrasts with the background or shall be moulded.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Terminal Marking Placement Restrictions",
+            "text": "A marking shall not be applied to a removable part of a terminal (such as a terminal head).",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Instruction Manual Requirements",
+            "text": "The instructions shall include: brief description for the principle of measurement, measuring method, connection diagrams, type of battery(ies)/rechargeable cells, charging information, operational lifetime/runtime, degrees of protection, and guidance on potential hazards.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Operating Uncertainty Estimation Methods",
+            "text": "Operating uncertainty shall include intrinsic uncertainty (under reference conditions) and the variations due to influence quantities. The users have two ways to estimate the maximum operating uncertainty of instrument in use. One way is to estimate according to type test data provided by the manufacturer, the other way is to estimate according to limit of intrinsic uncertainty and limit of variations due to every influence specified by this standard relating to their class index.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Routine Tests Requirements",
+            "text": "General routine tests shall be carried out on all products according to specified items: Test for intrinsic uncertainty, Test for variation due to position, Voltage test for instruments with hazardous live parts and accessible conductive parts, Test for return to zero, and Other tests supplemented in relevant parts.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Overall System Uncertainty Calculation",
+            "text": "The overall system uncertainty of an instrument with external accessory(ies) shall include the operating uncertainty of the instrument, the uncertainty of the impedance of wires and the operating uncertainty of accessory(ies).",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        }
+    ]
+}

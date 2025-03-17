@@ -77,6 +77,7 @@ def get_discrepancies(api_prompt: Regulatory_API_Prompt, context: str = ""):
             # 'event.completion' is the text
             if chunk.completion:
                 all_text.append(chunk.completion)
+                print(all_text)
 
     return "".join(all_text)
 

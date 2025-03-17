@@ -1,0 +1,46 @@
+{
+    "clauses": [
+        {
+            "title": "Pressure Limitations",
+            "text": "Before starting the purge, confirm the pressure in the condensate treating area is at zero psig. Do not go above 125 psig. Due to the MAOP V-750, operator is unable to purge with pressures exceeding 125 psig.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Pre-Purge Equipment Requirements",
+            "text": "CNX Resources Standard PPE. Calibrated personal four-gas monitor.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Operator Compliance Requirements",
+            "text": "CNX Resources Site Hazard Training. Complete CNX Midstream Risk Assessment or JSA. File accordingly. Document the event in the shift logs.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Safe Work Practice",
+            "text": "Complete CNX Risk Assessment or JSA. File accordingly. Complete hot work permit, blowdown tracker, and non-conformance.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Leak Detection Protocol",
+            "text": "Operator continue to check for leaks throughout the plant especially at the areas where piping may have been opened for maintenance. Operator should monitor gas detectors and fire eyes during this process.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Oxygen Purge Verification",
+            "text": "To verify that oxygen is completely purged, operator to crack high point vent and check for oxygen on all vessels.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        }
+    ]
+}

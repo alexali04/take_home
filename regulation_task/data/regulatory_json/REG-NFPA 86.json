@@ -1,0 +1,411 @@
+{
+    "document_name": "REG-NFPA 86",
+    "clauses": [
+        {
+            "title": "Scope",
+            "text": "This standard shall apply to Class A, Class B, Class C, and Class D ovens, dryers, and furnaces; thermal oxidizers; and any other heated enclosure used for processing of materials and related equipment.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Purpose",
+            "text": "This standard provides the requirements for furnaces to minimize the fire and explosion hazards that can endanger the furnace, the building, or personnel.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Application",
+            "text": "This entire standard shall apply to new installations and to alterations or extensions to existing equipment.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Retroactivity",
+            "text": "The provisions of this standard reflect a consensus of what is necessary to provide an acceptable degree of protection from the hazards addressed in this standard at the time the standard was issued.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Equivalency",
+            "text": "Nothing in this standard is intended to prevent the use of systems, methods, or devices of equivalent or superior quality, strength, fire resistance, effectiveness, durability, and safety over those prescribed by this standard.",
+            "severity": "optional",
+            "consequence_level": 0,
+            "noncompliance_chance_level": 0
+        },
+        {
+            "title": "Gas Filter Requirement",
+            "text": "A gas filter or strainer shall be installed in the fuel gas piping and shall be located downstream of the equipment isolation valve and sediment trap and upstream of all other fuel gas system components.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Pressure Regulator Requirement",
+            "text": "A pressure regulator shall be furnished wherever the plant supply pressure exceeds the burner operating or design parameters or wherever the plant supply pressure is subject to fluctuations, unless otherwise permitted by 6.2.6.2.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Regulator Venting Requirements",
+            "text": "Regulators, relief valves, and switches shall be vented to an approved location, and the following criteria also shall be met: (1) Heavier-than-air flammable gases shall be vented outside the building to a location where the gas is diluted below its LFL before coming in contact with sources of ignition or re-entering the building. (2) Vents shall be designed to prevent the entry of water and insects without restricting the flow capacity of the vent.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Flame Supervision Requirements",
+            "text": "Where a supervised flame is required for a burner, each pilot and main burner flame shall be equipped with flame supervision in one of the following ways: (1) Main and pilot flames supervised with independent flame sensors (2) Main and interrupted pilot flames supervised with a single flame sensor (3) Self-piloted burner supervised with a single flame sensor",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Burner Flame Detection for Line/Pipe/Radiant Burners",
+            "text": "Line burners, pipe burners, and radiant burners, where installed adjacent to one another or connected with flame-propagating devices, shall be considered to be a single burner and shall have at least one flame detector installed to sense burner flame at the end of the assembly farthest from the source of ignition.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Burner Management System Flame Supervision Exception",
+            "text": "Where a combustion safeguard is required for a burner flame, flame supervision shall not be required in the burner management system of a furnace zone when that zone temperature is greater than 1400\u00b0F (760\u00b0C) and certain criteria are met.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Inform Gas Supplier of Plant Additions",
+            "text": "It shall be the user's responsibility to inform the industrial gas supplier of additions to the plant that materially increase the inert gas consumption rate, so that vaporizer and storage capacity can be enlarged in advance of plant expansion.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Vaporizer Protection",
+            "text": "The vaporizer shall be protected against flow demands that exceed its rate of capacity when such demands can cause closure of a low-temperature shutoff valve.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Vaporizer Temperature Indication",
+            "text": "A temperature indicator shall be installed in the vaporizer effluent piping.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Low Temperature Alarm",
+            "text": "An audible or visual low-temperature alarm shall be provided to alert oven operators whenever the temperature is in danger of reaching the set point of the low-temperature flow shutoff valve so that they can begin corrective actions in advance of the flow stoppage.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Annual Seat Leakage Test for Gas Safety Shutoff Valves",
+            "text": "A test of seat leakage of gas safety shutoff valves shall be completed at least annually.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Conditions for Admitting Flammable Special Atmosphere Carrier Gases - Burn-In Procedure",
+            "text": "For furnaces using burn-in procedures for introducing flammable special atmosphere carrier gases, it shall be permissible to admit flammable special atmosphere carrier gas when: (1) The furnace temperature exceeds 1400\u00b0F (760\u00b0C) at the point where the flammable special atmosphere carrier gas is introduced; (2) If the furnace is designed to operate with an automatic inert gas purge, the presence of the required inert gas pressure shall be verified manually or automatically; (3) Operator action opens the valve.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Safety Shutoff Valve Automatic Closure Conditions",
+            "text": "Safety shutoff valves shall automatically close upon occurrence of the following conditions: (1) Normal furnace atmosphere burn-out initiated; (2) Normal furnace atmosphere purge-out initiated; (3) Low flow of carrier gas(es) that will not maintain a positive pressure in chambers below 1400\u00b0F (760\u00b0C) and positive pressure not restored; (4) A furnace temperature below which any liquid carrier gas used will not reliably dissociate; (5) Automatic emergency inert gas purge initiated; (6) Manual operator emergency inert gas purge initiated; (7) Power failure; (8) Liquid carrier gas excess flow",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Explosion Hazards",
+            "text": "Includes improper purge timing and purge flow and safety ventilation",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Sources of Ignition",
+            "text": "Including auto-ignition (e.g., by incandescent surfaces)",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Control Functions",
+            "text": "Functions of controls, safety devices, and maintenance of proper set points",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Special Atmosphere Handling",
+            "text": "Handling of special atmospheres",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Low-Oxygen Atmosphere Handling",
+            "text": "Handling of low-oxygen atmospheres",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Hazardous Materials Handling",
+            "text": "Handling and processing of hazardous materials",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Confined Space Entry",
+            "text": "Confined space entry procedures",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Operating Instructions",
+            "text": "Operating instructions",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Lockout/Tagout Procedures",
+            "text": "Lockout/tagout procedures",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Surrounding Process Hazards",
+            "text": "Hazardous conditions resulting from interaction with surrounding processes",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Fire Protection",
+            "text": "Fire protection systems",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Molten Material Handling",
+            "text": "Molten material",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Quench Systems",
+            "text": "Quench systems",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Sensing Element Positioning",
+            "text": "The sensing element should be positioned where the difference between the temperature control sensor and the excess temperature limit sensor is minimized. The temperature-sensing element of the excess temperature limit interlock should be located where it will sense the excess temperature condition that will cause the first damage to the furnace or work as temperatures within the furnace rise above the maximum operating set point most critical to safe operation.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Temperature Sensing Element Monitoring",
+            "text": "The temperature-sensing element of the excess temperature limit interlock can be monitored by other instrumentation, provided that the accuracy of the excess temperature limit interlock temperature reading is not diminished.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Excess Temperature Set Point",
+            "text": "The excess temperature set point should be set no higher than the maximum temperature specified by the manufacturer. If flammable or combustible materials are being processed in an oven or a dryer, the set point should be a temperature that will not allow the material to reach its auto-ignition temperature.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Ventilation Requirements for Solvent Ovens",
+            "text": "Industrial experience indicates that 440 scfm of air per gal (3.29 standard m3/min of air per L) of flammable volatiles is reasonably safe for dipped metal.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Fresh Air Supply for Oven Safety",
+            "text": "Only the fresh air supplied provides safety ventilation, and the amount of fresh air supplied must be equivalent to the amount of oven exhaust air, to keep the system pressure in balance.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Temperature Correction for Ventilation",
+            "text": "The LFL of all solvents tested decreases as the temperature increases, leading to the conclusion that more air [referred to 70\u00b0F (21\u00b0C)] is required for safety per gallon (liter) of solvent as the oven temperature increases.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Oven Ventilation Measurement",
+            "text": "A simple method of determining the quantity of air exhausted from an oven is to measure the velocity of air through the discharge duct by means of a velometer, an anemometer, a pitot tube, or other suitable means.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Vapor Concentration Controller Backup",
+            "text": "When a continuous vapor concentration controller is used to modulate the flow of fresh air into or exhaust from an oven, another protection system is required, such as a fixed damper stop that prevents the oven solvent concentration from exceeding 50 percent LFL.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Prevention of Air Infiltration in Furnaces",
+            "text": "The object of this requirement is to prevent infiltration of air that could be detrimental to the work being processed or could result in the creation of flammable gas\u2013air mixtures within the furnace.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Flow Rate Monitoring for Special Atmosphere",
+            "text": "The indication of flow is intended to be provided by a device that will indicate flow any time a flow is occurring, including during a power outage. A mechanical device that indicates the flow rate without using any source of power except the physical flow of the inert purge gas meets this requirement.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Atmosphere Pressure Maintenance",
+            "text": "Failure to maintain positive pressure in a furnace can allow air infiltration. Air infiltration can occur at effluents, open ends, or the perimeter of doors.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Burn-off Pilot Safety",
+            "text": "Burn-off pilots should be located where they will contact the effluent stream. Burn-off pilots are not to be interrupted by any action other than closing of their individual manual shutoff valve or closing of the main equipment manual shutoff valve.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Quench Oil Water Content",
+            "text": "Quench oil should be checked for water content wherever there is a possibility of water intrusion into the oil supply or oil systems. If a quantitative analysis is performed, the water content in the quench oil should not exceed 0.5 percent by volume.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Carbon Steel Plate Usage for Water Cooling",
+            "text": "Although carbon steel plate was been used for many years with water cooling, its use is no longer permitted, because corrosion is continuous and the extent of it is difficult to determine. In existing installations where carbon steel has been used with water-based coolants, the wall thickness should be tested periodically to determine the corrosion rate and predict the remaining life.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Quench Medium Tank Cooling Systems",
+            "text": "Quench medium tanks generally utilize a cooling system to maintain the quench medium at an operating temperature to reduce the quantity of quench media required. The three basic cooling systems in general use consist of: (1) Internal cooler, where a heat transfer medium is circulated through a heat exchanger within the quench tank (2) External cooler in which a quench medium is withdrawn from a quench tank, circulated through a water-cooled heat exchanger, and returned (3) External cooler in which a quench medium is withdrawn from a quench tank, circulated through an air-cooled heat exchanger, and returned",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Maximum Working Pressure Requirements",
+            "text": "Maximum working pressure should include allowance for vacuum conditions.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Purpose of Vacuum Symbols",
+            "text": "The purpose of this standard is to establish a uniform system of graphic symbols in vacuum technology.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Symbol Usage Guidelines",
+            "text": "A single-line diagram is one in which the graphic symbols are shown without regard to the actual physical location, size, or shape of the components.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Symbol Orientation Rule",
+            "text": "The orientation of a symbol on a drawing, including a mirror image presentation, does not alter the meaning of the symbol.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Symbol Scale",
+            "text": "A symbol might be drawn to any scale that suits a particular drawing.",
+            "severity": "optional",
+            "consequence_level": 0,
+            "noncompliance_chance_level": 0
+        },
+        {
+            "title": "Arrow Usage",
+            "text": "Arrows should be omitted unless necessary for clarification.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Symbol Composition",
+            "text": "A symbol shall be considered as the aggregate of all its parts.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Furnace Location and Construction",
+            "text": "General requirements for furnace location and construction are outlined in Chapter 5, including explosion relief, furnace design, and location considerations.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Furnace Safety Equipment",
+            "text": "Safety equipment requirements for furnaces are detailed in Chapter 8, covering aspects such as burner management system logic, flame supervision, safety devices, and safety shutoff valves.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Special Atmosphere Requirements",
+            "text": "Detailed requirements for special atmospheres in Class C ovens and furnaces are specified in Chapter 13, including safety equipment, gas mixing systems, and handling of flammable and inert atmospheres.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Fuel Gas Systems",
+            "text": "Chapter 6 provides comprehensive guidelines for fuel gas-fired units, including air-fuel gas mixers, combustion air control, equipment fuel gas piping, and safety valves.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Heating System Safety Devices",
+            "text": "Section 8.18 details safety requirements for electrical heating systems, including excess temperature limit interlocks and heating equipment controls.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        }
+    ]
+}

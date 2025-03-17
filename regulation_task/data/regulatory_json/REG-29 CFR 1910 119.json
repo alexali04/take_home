@@ -1,0 +1,495 @@
+{
+    "document_name": "REG-29 CFR 1910 119",
+    "clauses": [
+        {
+            "title": "Purpose",
+            "text": "This instruction establishes uniform policies, procedures, standard clarifications, and compliance guidance for enforcement of the standard for Process Safety Management of Highly Hazardous Chemicals, 29 CFR 1910.119 ('PSM standard'), and amendments to the standard for Explosives and Blasting Agents, 29 CFR 1910.109.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Scope",
+            "text": "This instruction applies OSHA-wide.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 0
+        },
+        {
+            "title": "Enforcement Activity Guidelines",
+            "text": "Enforcement activities related to the PSM standard shall follow specific types of inspections including Program-Quality-Verification (PQV) inspections, programmed inspections, unprogrammed inspections, and responses to accidents and catastrophes.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Inspection Resource Requirements",
+            "text": "Only trained compliance safety and health officers (CSHOs) with specific training and experience in chemical or explosives industries shall be assigned to lead PQV inspections.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Employee Participation",
+            "text": "Employee participation in the Process Safety Management program",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Training Requirements",
+            "text": "Training for employees involved in operating a process, including initial and refresher training",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Contractor Management",
+            "text": "Procedures for managing contractor safety, including hazard communication and performance evaluation",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Hot Work Permits",
+            "text": "Requirement for a written hot work permit program and active permit tracking",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Incident Investigation",
+            "text": "Procedures for investigating and documenting process-related incidents",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Emergency Planning and Response",
+            "text": "Develop and maintain written emergency action plans",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Selection of Process(es)",
+            "text": "The team leader shall select one or more processes within which to evaluate compliance with the standard. This selection shall be based on the factors listed below, and shall be documented in the case file: a. Factors observed during the walkthrough; b. Incident reports and other history; c. Company priorities for or completed process hazard analyses (PHA); d. Age of the process unit; e. Nature and quantity of chemicals involved; f. Employee representative input; g. Current hot work, equipment replacement, or other maintenance activities; and h. Number of employees present.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Citations Classification",
+            "text": "Any violation of the PSM standard is a condition which could result in death or serious physical harm to employees. Accordingly, violations of the PSM standard shall normally not be classified as 'other-than-serious'.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Audit Guidelines Documentation",
+            "text": "The questions are designed to elicit a determination of 'Yes' or 'No' by the CSHO as to whether compliance with the provision has been met. A determination of 'No' for any provision indicates noncompliance; thus, any 'No' shall normally result in a citation for a violation of that provision.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Process Hazard Analysis Priority Order",
+            "text": "Determine and document a priority order for conducting initial PHAs based on: the extent of process hazards, number of potentially affected employees, age of process, and operating history",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Process Hazard Analysis Timeline",
+            "text": "Complete initial PHAs according to schedule: No less than 25% by 5/26/94, no less than 50% by 5/26/95, no less than 75% by 5/26/96, with all initial PHAs completed by 5/26/97",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "PHA Methodology Requirements",
+            "text": "Use one or more approved PHA methodologies: What-if?, Checklist, What-if/Checklist, Hazard & Operability Study, Failure Mode and Effects Analysis, Fault Tree Analysis, or other appropriate methodology",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Operating Procedures Coverage",
+            "text": "Create written operating procedures for each covered process providing clear instructions, addressing steps for each operating phase including initial start-up, normal operations, temporary operations, emergency shutdowns, emergency operations, normal shutdown, and start-ups following turnarounds",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Safety and Health Considerations in Operating Procedures",
+            "text": "Have safety and health considerations been included in the operating procedures? Do they include at a minimum: * Properties of, and hazards presented by, chemicals used in the process? * Precautions necessary to prevent exposure, including engineering controls, administrative controls, and personal protective equipment? * Control measures to be taken if physical contact or airborne exposure occurs? * Quality control for raw materials and control of hazardous chemical inventory levels? * Any special or unique hazards?",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Operating Procedures Accessibility",
+            "text": "Are operating procedures readily accessible to employees who work in or maintain a process?",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Operating Procedures Review",
+            "text": "Are operating procedures reviewed as often as necessary to assure that they reflect current operating practice? Are they certified annually by the employer that they are current and accurate?",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Safe Work Practices",
+            "text": "Have safe work practices been developed and implemented for employees and contractors to control hazards during operations such as: * Lockout/tagout? * Confined space entry? * Opening process equipment or piping? * Control over entrance into a facility by maintenance, contractor, laboratory or other support personnel?",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Contractor Safety Information Collection",
+            "text": "Host employer must obtain and evaluate information regarding the contractor's safety performance and programs for selection of contractors",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Contractor Hazard Communication",
+            "text": "Contractors must be informed of known fire, explosion, or toxic release hazards related to their work prior to initiating work at the site",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Emergency Action Plan Communication",
+            "text": "Contractors must be informed of applicable provisions of the employer's emergency action plan prior to initiating work",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Contractor Training Requirements",
+            "text": "Contractors must train employees in safe work practices, potential hazards, emergency procedures, and facility safety rules",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Pre-Startup Safety Review",
+            "text": "Confirm construction and equipment matches design specifications, safety procedures are in place, PHA recommendations are implemented, and employee training is completed before introducing hazardous chemicals",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Mechanical Integrity Program",
+            "text": "Develop comprehensive program to ensure integrity of process equipment including identification, maintenance procedures, training, inspection, and deficiency correction",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Hot Work Permit Program Summary",
+            "text": "The intent of this paragraph is to require employers to control, in a consistent manner, nonroutine work conducted in process areas. Specifically, this subparagraph is concerned with the permitting of hot work operations associated with welding and cutting in process areas.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Hot Work Permit Minimum Requirements",
+            "text": "Minimum requirements include: that the employer issue a hot work permit for hot work operations conducted on or near a covered process and that hot work permits shall document compliance with the fire prevention and protection requirements of 29 CFR 1910.252(a).",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Management of Change Program Summary",
+            "text": "The intent of this paragraph is to require management of all modifications to equipment, procedures, raw materials and processing conditions other than 'replacement in kind' by identifying and reviewing them prior to implementation of the change.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Management of Change Minimum Requirements",
+            "text": "Minimum requirements for management of change include: establishing written procedures to manage change; addressing the technical basis, impact on safety and health, modification to operating procedures, necessary time period, and authorizations required; informing and training employees affected; and updating process safety information and operating procedures or practices.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Incident Investigation Requirement",
+            "text": "The employer is required to investigate each incident which resulted in, or could reasonably have resulted in a catastrophic release of highly hazardous chemical in the workplace. An investigation shall be initiated no later than 48 hours following the incident.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Incident Investigation Team Composition",
+            "text": "Incident investigation teams must contain at least one person knowledgeable in the process involved in the incident, and other members with appropriate knowledge and experience to thoroughly investigate and analyze the incident. A contractor employee must be included if the incident involved contractor work.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Incident Investigation Report Requirements",
+            "text": "Incident investigation reports must include: 1) Date of incident 2) Date investigation began 3) Description of incident 4) Factors that contributed to the incident 5) Recommendations from the investigation.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Incident Report Retention and Review",
+            "text": "Incident reports shall be reviewed with all affected personnel whose job tasks are relevant to the investigation and retained for five years.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Compliance Audits - General Requirements",
+            "text": "Audits at least every three years; maintenance of audit reports for at least the last two audits; audits conducted by at least one person knowledgeable in the process; documentation of an appropriate response to each finding; documentation that the deficiencies found have been corrected.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Compliance Audit Certification",
+            "text": "Employer must certify in writing that there has been an audit of compliance with PSM at least every three years",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Audit Report Requirements",
+            "text": "Audit reports must include an evaluation of all required paragraphs of the PSM standard",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Trade Secrets Information Sharing",
+            "text": "Provide all information necessary to comply with the standard to personnel developing paragraphs (d), (e), (f), (n) and (o) without regard to possible trade secrets",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Flammable Gas Definition",
+            "text": "A gas that at ambient temperatures and pressure forms a flammable mixture with air at a concentration of thirteen (13) percent by volume or less; or A gas that, at ambient temperature and pressure, forms a range of flammable mixtures with air wider than twelve (12) percent by volume, regardless of the lower limit.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Retention of Process Safety Information",
+            "text": "Process safety information is to be kept for the lifetime of the process, and updated whenever changes other than 'replacement in kind' are made.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Employee Consultation Definition",
+            "text": "Consultation refers to a two-way dialogue between the employer and the employees and their representatives, in which the employer elicits, and responds to, employees' concerns and suggestions bearing upon the elements of process safety management.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Process Hazard Analysis (PHA) Priority Determination",
+            "text": "The appropriate priority for conducting PHAs is to be determined by using all of the criteria identified in this paragraph, e.g., extent of the process hazards (catastrophic potential), age of the process, number of potentially exposed employees, and operating history.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "PHA Completion Timeline",
+            "text": "All initial PHAs must be completed as soon as possible, with at least 25 percent completed by May 26, 1994; 50 percent by May 26, 1995; 75 percent by May 26, 1996; and all completed by May 26, 1997.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Contractor Safety Responsibilities",
+            "text": "Host employers and general contractors are responsible for ensuring subcontractors' compliance with safety standards, including inquiring into safety records, informing about potential hazards, and verifying adherence to safety practices.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Employee Training Requirements",
+            "text": "Employers must ensure employees understand their training through positive means such as written tests, on-the-job demonstrations, or other documented methods of ascertaining comprehension.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Contract Employee Training Requirements",
+            "text": "Contract employees must receive training in accordance with specific training requirements set forth in paragraphs (g) and (j), and the host employer must ensure through periodic evaluations that the training is equivalent to training for direct hire employees.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Contractor Safety Performance Evaluation",
+            "text": "When selecting a contractor, an employer must evaluate the potential contractor's safety performance and programs. While documentation is not explicitly required, OSHA compliance officers will review records about the selection process.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Contractor Injury and Illness Log",
+            "text": "Employers must maintain an injury and illness log for contract employees, which can be the contractor's OSHA 200 log, a separate log for each contractor, or a combined log that distinguishes between contractors.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Pre-Startup Safety Review",
+            "text": "Employers are responsible for ensuring process equipment meets design specifications prior to startup, including modifying process safety information for equipment that has been significantly modified.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Mechanical Integrity Procedures",
+            "text": "Employers must develop written procedures for maintenance that ensure careful, regularly scheduled maintenance of process equipment. A breakdown maintenance program is not acceptable.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Maintenance Employee Training",
+            "text": "Employers must provide ongoing training to maintenance employees to ensure they can perform job tasks safely, including training in relevant operating procedures, safe work practices, and emergency action plans.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Equipment Deficiency Correction",
+            "text": "Equipment operating outside acceptable limits must be corrected promptly, with safe and timely measures taken to ensure safe operation if immediate correction is not possible.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Management of Change",
+            "text": "Any change affecting a covered process triggers management of change provisions, except for direct replacements in kind. Changes in material, composition, shape, size, or design require a management of change review.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Compliance Audits",
+            "text": "Employers must conduct compliance audits and certify evaluation of 1910.119 at least every 3 years, with documentation of findings and corrective actions.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Area Office Coordination Requirements",
+            "text": "Coordination within the Area Office is absolutely essential in the orderly conduct of a PQV inspection. The Area Director and all those involved in a PQV inspection must commit the resources with the understanding that the project is long-term, possibly several weeks or months.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Inspection Team Composition Guidelines",
+            "text": "The team should consist of two safety compliance officers/engineers, two industrial hygiene compliance officers, an administrative support person and a construction specialist. The team leader could be from either discipline in the team, but preferably a safety specialist.",
+            "severity": "recommended",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Document Request Protocol",
+            "text": "It is highly recommended that all requests for copies of company documents be in writing. A standard document request format should be established and should contain at least the following information: 1. Who is the requester, 2. To whom the request is made, 3. Identity of the document, 4. Company document number, 5. Date of request, 6. Priority for response, 7. Internal I.D. number, 8. Date request fulfilled, 9. Comment section.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "Inspection Facilities Requirements",
+            "text": "The PQV team needs a suitable work area/command center from which the inspection can be conducted and coordinated. The work area must be secure 24 hours a day with access limited to the inspection team and emergency company officials.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Previous OSHA History Search",
+            "text": "Search for all citations, reports, litigation results, outstanding issues, and health response team reports",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "EPA History Review",
+            "text": "Review reportable releases, reports, complaints, and pending actions",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Agency History Verification",
+            "text": "Check histories with Dept. of Transportation, Coast Guard, ESDA/FEMA, State Fire Marshal, State Boiler and Pressure Vessel",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Inspection Team Formation",
+            "text": "Identify critical needs, select team members, identify expertise, assign areas, provide training for expertise gaps",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Personal Protective Equipment Requirements",
+            "text": "Use standard PPE including safety shoes, safety glasses with side shields, hard hat, site-specific PPE, flame retardant clothing",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 2
+        },
+        {
+            "title": "PQV Inspections Identifier Code",
+            "text": "The identifier code \"PSMPQV\" shall be used for these inspections.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "PQV Inspections Identification",
+            "text": "PQV inspections shall be identified by recording \"PSMPQV\" in item 25.d of the OSHA-1 Form.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Onsite Contractor Inspections",
+            "text": "Any inspections of onsite contractors shall also be identified by recording \"PSMPQV\" in item 25.d of the OSHA-1 Form.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Multi-Employer Inspection Linkage",
+            "text": "Linkage of all of the employers inspected on-site shall be performed in accordance with the instructions for entering Multi-Employer Inspections currently specified in Chapter V, item E.(5.), of the IMIS Forms Manual.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Unprogrammed PSM-related Inspections Coding",
+            "text": "All unprogrammed inspection activity relating to the PSM standard shall be coded as: TYPE=N, ID=06, VALUE=PSMP in Item 42 of the OSHA-1 form.",
+            "severity": "mandatory",
+            "consequence_level": 1,
+            "noncompliance_chance_level": 1
+        },
+        {
+            "title": "Programmed Inspections PSM Coverage Screening",
+            "text": "In all programmed safety and health inspections in general industry, a determination shall be made as to whether the establishment is covered by the PSM standard and coded accordingly in Item 42.",
+            "severity": "mandatory",
+            "consequence_level": 2,
+            "noncompliance_chance_level": 1
+        }
+    ]
+}

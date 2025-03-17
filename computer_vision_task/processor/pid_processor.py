@@ -135,6 +135,13 @@ class PIDAnalyzer:
                     "contour": cnt,
                     "bbox": (x, y, w, h)
                 })
+            
+            # cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            # cv2.putText(image, shape_type, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 
+            #     0.5, (0, 255, 0), 2, cv2.LINE_AA)
+            # cv2.imshow("Detected Shapes", image)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
         
         return detected_shapes
 

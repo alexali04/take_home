@@ -37,11 +37,12 @@ def main(args):
             max_tokens=1000
         )
 
+    print(len(api_prompt.content))
+
     for graph in graphs:
         discrepancies = get_discrepancies(api_prompt, str(graph))
         api_prompt.reset_content()
-        print(api_prompt.content[-500:])
-        print(discrepancies)
+        print(f"Detected Discrepancies: {discrepancies}")
         
 
 if __name__ == "__main__":

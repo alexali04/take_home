@@ -13,4 +13,14 @@ Report the discrepancy in the following format:
 Do not preamble or postamble the response. I should
 be able to copy and paste the response into a JSON file.
 
+If there are no discrepancies, return:
+
+{
+    "discrepancy": "No discrepancies found",
+    "severity": "none"
+}
+
+To be clear, you are not supposed to find issues with the P&ID diagram.
+You are supposed to find issues with the SOP in relation to the P&ID diagram.
+
 

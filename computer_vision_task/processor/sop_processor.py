@@ -62,22 +62,17 @@ def get_discrepancies(api_prompt: Regulatory_API_Prompt, context: str = ""):
     
 
     client = anthropic.Anthropic(api_key=api_key)
-    response_stream = client.messages.create(
+
+    all_text = []
+
+    with client.messages.stream(
         model=api_prompt.model,
         max_tokens=api_prompt.max_tokens,
         system=api_prompt.sys_prompt,
         messages=messages,
-        stream=True
-    )
-
-    all_text = []
-    for chunk in response_stream:
-        # chunk is typically a dict-like object with chunk.content
-        if chunk.type == "completion":
-            # 'event.completion' is the text
-            if chunk.completion:
-                all_text.append(chunk.completion)
-                print(all_text)
+    ) as stream:
+        for text in stream.text_stream:
+            all_text.append(text)
 
     return "".join(all_text)
 

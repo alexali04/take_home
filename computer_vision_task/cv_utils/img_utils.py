@@ -158,4 +158,56 @@ def display_graph(G, path, name):
     nx.draw(G, pos=pos, labels=labels, with_labels=True, node_size=600, font_size=8, arrows=True)
     plt.title("P&ID Graph")
     plt.savefig(f"{path}/myplot_{name}.png")
-    plt.close()  # <--- Make sure you have this at the end
+    plt.close()  
+
+import networkx as nx
+from networkx.readwrite import json_graph
+import json
+
+def graph_to_adjacency_json(G: nx.DiGraph, filename="adjacency_graph.json"):
+    """
+    Create a simpler adjacency-based JSON.
+    Each node is identified by its label (or node_id if no label).
+    The edges store the connected node labels and orientation.
+    """
+    # 1) We'll build a dict: { "nodes": [...], "edges": { "NodeLabel": [ {"target": "OtherLabel", "orientation": "..."} ] } }
+    
+    label_map = {}
+    for node_id, data in G.nodes(data=True):
+        label = data.get("label", node_id)
+        label_map[node_id] = label
+    
+    adjacency = {}
+    for node_id in G.nodes():
+        label = label_map[node_id]
+        adjacency[label] = []  
+    
+    for source, target, data in G.edges(data=True):
+        source_label = label_map[source]
+        target_label = label_map[target]
+        
+        orientation = data.get("orientation", "undirected")
+        arrow_id = data.get("arrow_id", None)
+        
+        adjacency[source_label].append({
+            "target": target_label,
+            "orientation": orientation,
+            "arrow_id": arrow_id
+        })
+    
+    final_data = {
+        "nodes": [],
+        "edges": adjacency
+    }
+
+    for node_id, data in G.nodes(data=True):
+        label = label_map[node_id]
+        node_info = {
+            "label": label,
+            "bbox": data.get("bbox", None),
+            "class": data.get("cls", None),
+            "confidence": data.get("conf", None),
+        }
+        final_data["nodes"].append(node_info)
+    
+    return final_data

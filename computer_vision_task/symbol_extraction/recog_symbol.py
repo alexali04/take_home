@@ -9,7 +9,8 @@ from cv_utils.img_utils import (
     nms,
     clamp_range,
     get_center,
-    display_graph
+    display_graph,
+    graph_to_adjacency_json
 )
 import networkx as nx
 from networkx.readwrite import json_graph
@@ -356,10 +357,9 @@ def construct_graphs_for_dir(image_dir, show_img: bool = False, weight_path: str
 
         # 5) Build the P&ID graph
         pid_graph = build_pid_graph(enhanced_symbol_bboxes, arrow_bboxes)
-        breakpoint()
         print(f"Built graph for {image_name} with {len(pid_graph.nodes)} nodes and {len(pid_graph.edges)} edges.")
 
-        graphs.append(json_graph.node_link_data(pid_graph))
+        graphs.append(graph_to_adjacency_json(pid_graph))
 
         # 6) Visualize detected components
         if show_img:
